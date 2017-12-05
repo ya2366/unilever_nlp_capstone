@@ -8,8 +8,8 @@ from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 import sys
-from importlib import reload
-reload(sys)
+#from importlib import reload
+#reload(sys)
 
 from nltk.parse.stanford import StanfordParser
 
