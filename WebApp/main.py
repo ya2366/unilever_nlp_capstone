@@ -7,9 +7,9 @@ import pandas as pd
 from werkzeug.utils import secure_filename
 
 uploadFolder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
-#import summary_LSA
-#import preprocessing
-#import text_rank_summary
+import summary_LSA
+import preprocessing
+import text_rank_summary
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 allowedTypes = set(['xlsx'])
@@ -39,7 +39,7 @@ def text_summarization():
 @app.route("/summarization/textrank")
 def text_summarization_textrank():
     return render_template("summarization_textrank.html")
-'''
+
 @app.route("/get_summarization", methods = ['POST'])
 def get_summarization():
     text = request.form['text']
@@ -59,7 +59,7 @@ def get_summarization_textrank():
     context = dict()
     context["summarization"] = textRank_result
     return render_template("summarization_text_rank_result.html", **context)
-'''
+
 @app.route('/upload',methods=['GET','POST'])
 def upload_file():
   if request.method == 'POST':
