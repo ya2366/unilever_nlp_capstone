@@ -1,0 +1,72 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by TEMPLATED
+http://templated.co
+Released for free under the Creative Commons Attribution License
+
+Title      : Travel Portal
+Version    : 1.0
+Released   : 20070618
+Description: A two-column, fixed-width template.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Unilever Text Analysis</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href= "{{ url_for('static', filename='default.css') }}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div id="page">
+  <div id="sidebar">
+    <div id="logo">
+      <center><image src = "static/images/unilever.png" height="140px" margin="20px"></image></center>
+    </div>
+    <!-- end header -->
+    <div id="menu">
+      <ul>
+            <li class='first'><a href="/keyphrase_extraction">Keyphrase Extraction page</a></li>
+    <li><a href="/summarization">Summarization Page</a></li>
+    <li><a href="/sentimental_analysis_english">Sentimental Analysis English</a></li>
+    <li><a href="/sentimental_analysis_multilingual">Sentimental Analysis Multi-Lingual</a></li>
+    <li><a href="/crawler">Amazon Crawler</a></li>
+
+      </ul>
+    </div>
+    
+  </div>
+  <!-- end sidebar -->
+  <div id="content">
+    <div><img src="images/img08.jpg" alt="" width="740" height="220" /></div>
+    <div class="boxed">
+      <h1 class="title2"><center>Keyphrase Extraction Result Using Rake</center></h1>
+      <h2>Keyphrase and scores</h2>
+      <div>
+        {% for n in keywords_score %}
+        <div>{{n[0]}} {{n[1]}}</div>
+        {% endfor %}
+      </div>
+      <h2>Keyphrase and counts</h2>
+      <div>
+        {% for n in keywords_counts %}
+        <div>{{n[0]}} {{n[1]}}</div>
+        {% endfor %}
+      </div>
+      <h2>Stem and counts</h2>
+      <div>
+        {% for n in stem_counts %}
+      <div>{{n[0]}} {{n[1]}}</div>
+        {% endfor %}
+      </div>
+    </div>
+    
+  </div>
+
+<!-- end page -->
+</body>
+</html>
