@@ -1,0 +1,73 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by TEMPLATED
+http://templated.co
+Released for free under the Creative Commons Attribution License
+
+Title      : Travel Portal
+Version    : 1.0
+Released   : 20070618
+Description: A two-column, fixed-width template.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Unilever Text Analysis</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href= "{{ url_for('static', filename='default.css') }}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div id="page">
+  <div id="sidebar" style = "height:100vh">
+    <div id="logo">
+      <center><image src = "static/images/unilever.png" height="140px" margin="20px"></image></center>
+    </div>
+    <!-- end header -->
+    <div id="menu">
+      <ul>
+            <li class='first'><a href="/keyphrase_extraction">Keyphrase Extraction page</a></li>
+    <li><a href="/summarization">Summarization Page</a></li>
+    <li><a href="/sentimental_analysis_english">Sentimental Analysis English</a></li>
+    <li><a href="/sentimental_analysis_multilingual">Sentimental Analysis Multi-Lingual</a></li>
+    <li><a href="/crawler">Amazon Crawler</a></li>
+
+      </ul>
+    </div>
+    
+  </div>
+  <!-- end sidebar -->
+  <div id="content">
+    <div><img src="images/img08.jpg" alt="" width="740" height="220" /></div>
+    <div class="boxed">
+      <h1 class="title2"><center>Welcome to Unilever NLP Page !</center></h1>
+      <h1 class="title2"><center>Multiligual Sentiment Analysis</center></h1>
+      <h2>Input your review text</h2>
+      <form method="POST" action="/get_senti_infor">
+          <p>Input the text file that you want to do multilingual sentiment analysis: </p>
+          <input type="text" name="text" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
+          <p>Input the title if it has </p>
+          <input type="text" name="title" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
+          <p>After you finished, click "Submit" to gain the sentiment score</p>
+          <input type="submit" value="Submit Review" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;">
+      </form>
+      <h2>Input your survey comparison text</h2>
+      <form method="POST" action="/survey_senti">
+          <p>Input the before wash survey data: </p>
+          <input type="text" name="before_sur" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
+          <p>Input the after wash survey data: </p>
+          <input type="text" name="after_sur" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
+          <p>After you finished, click "Submit" to gain the sentiment score</p>
+          <input type="submit" value="Submit Survey" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;">
+      </form>
+    </div>
+    
+  </div>
+
+<!-- end page -->
+</body>
+</html>
