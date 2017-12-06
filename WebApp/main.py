@@ -32,6 +32,7 @@ def keyphrase_extraction():
 @app.route("/keyphrase_extraction/textrank")
 def keyphrase_extraction_textrank():
     return render_template("textrank.html")
+
 @app.route("/summarization")
 def text_summarization():
     return render_template("summarization.html")
