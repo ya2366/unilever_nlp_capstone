@@ -1,0 +1,19 @@
+interactions:
+- request:
+    body: text=random
+    headers:
+      accept: [application/json]
+      accept-encoding: ['gzip, deflate']
+      content-type: [application/x-www-form-urlencoded]
+      user-agent: [Aylien Text API Python 0.4.0]
+    method: POST
+    uri: https://api.aylien.com/api/v1/classify/unsupervised
+  response:
+    body: {string: !!python/unicode Authentication failed}
+    headers:
+      connection: [keep-alive]
+      content-type: [text/plain; charset=us-ascii]
+      date: ['Tue, 01 Sep 2015 15:39:24 GMT']
+      server: [openresty/1.7.7.2]
+    status: {code: 403, message: Forbidden}
+version: 1

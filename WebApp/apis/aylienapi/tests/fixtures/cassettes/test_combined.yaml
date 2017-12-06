@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: url=http%3A%2F%2Fwww.bbc.com%2Fnews%2Ftechnology-33764155&endpoint=entities&endpoint=concepts&endpoint=classify
+    headers:
+      accept: [application/json]
+      accept-encoding: ['gzip, deflate']
+      content-type: [application/x-www-form-urlencoded]
+      user-agent: [Aylien Text API Python 0.4.0]
+    method: POST
+    uri: https://api.aylien.com/api/v1/combined
+  response:
+    body: {string: !!python/unicode '{"text":"Hackers target internet address bug
+        to disrupt sites\nHackers are exploiting a serious flaw in the internet''s
+        architecture, according to a security firm.\n\nThe bug targets systems which
+        convert domain names into IP addresses.\n\nExploiting it could threaten the
+        smooth running of internet services as it allows hackers to launch denial-of-service
+        attacks on websites, potentially forcing them offline.\n\nRegular internet
+        users are unlikely to be severely affected, however.\n\nBind is the name of
+        a variety of Domain Name System (DNS) software used on the majority of internet
+        servers.\n\nThe recently identified bug allows attackers to crash the software,
+        therefore taking the DNS service offline and preventing URLs, for example,
+        from working.\n\nA patch for the flaw is already available, but many systems
+        are yet to be updated.\n\nThe Internet Systems Consortium (ISC), which develops
+        Bind, said in a tweet that the vulnerability was \"particularly critical\"
+        and \"easily exploited\".\n\nDaniel Cid, a networking expert at Sucuri has
+        published a blog post on the vulnerability in which he explained that real
+        exploits taking advantage of the flaw have already happened.\n\nHe told the
+        BBC: \"A few of our clients, in different industries, had their DNS servers
+        crashed because of it.\n\n\"Based on our experience, server software, like
+        Bind, Apache, OpenSSL and others, do not get patched as often as they should.\"\n\nCybersecurity
+        expert Brian Honan commented that a spike in exploits of the flaw was expected
+        over the next few days.\n\nHowever, he added that websites would often still
+        be accessible via other routes and cached addresses on DNS servers around
+        the world, even when certain key DNS servers have been made to crash.\n\n\"It''s
+        not a doomsday scenario, it''s a question of making sure the DNS structure
+        can continue to work while patches are rolled out,\" he said.\n\nThe impact
+        on general internet users is likely to be minimal, according to Mr Cid.\n\n\"Average
+        internet users won''t feel much pain, besides a few sites and email servers
+        down,\" he said.","results":[{"endpoint":"entities","result":{"language":"en","entities":{"keyword":["internet
+        servers","flaw in the internet","internet users","server software","exploits
+        of the flaw","internet","System (DNS) software","servers","flaw","expert","systems","vulnerability","software","exploits","users","websites","addresses","domain","offline","services"],"organization":["DNS","BBC"],"person":["Daniel
+        Cid","Brian Honan"]}}},{"endpoint":"concepts","result":{"language":"en","concepts":{"http://dbpedia.org/resource/Denial-of-service_attack":{"surfaceForms":[{"string":"denial-of-service
+        attacks","score":1.0,"offset":325}],"types":[""],"support":620},"http://dbpedia.org/resource/Internet_Systems_Consortium":{"surfaceForms":[{"string":"Internet
+        Systems Consortium","score":1.0,"offset":826}],"types":["http://dbpedia.org/ontology/Non-ProfitOrganisation"],"support":45},"http://dbpedia.org/resource/OpenSSL":{"surfaceForms":[{"string":"OpenSSL","score":1.0,"offset":1330}],"types":["http://dbpedia.org/ontology/Software"],"support":247},"http://dbpedia.org/resource/Domain_Name_System":{"surfaceForms":[{"string":"Domain
+        Name System","score":1.0,"offset":503},{"string":"DNS","score":0.9999999999599822,"offset":523}],"types":[""],"support":1437},"http://dbpedia.org/resource/BBC_News":{"surfaceForms":[{"string":"BBC","score":0.8707235306716345,"offset":1169}],"types":["http://dbpedia.org/ontology/Company"],"support":2062},"http://dbpedia.org/resource/Apache_HTTP_Server":{"surfaceForms":[{"string":"Apache","score":1.0,"offset":1322}],"types":["http://dbpedia.org/ontology/Software"],"support":503}}}},{"endpoint":"classify","result":{"language":"en","categories":[{"label":"computing
+        and information technology - software","code":"04003005","confidence":1.0}]}}]}'}
+    headers:
+      connection: [keep-alive]
+      content-length: ['3854']
+      content-type: [application/json;charset=UTF-8]
+      date: ['Tue, 01 Sep 2015 15:39:46 GMT']
+      server: [openresty/1.7.7.2]
+      x-mashape-billing: [requests=3]
+      x-ratelimit-limit: ['6900']
+      x-ratelimit-remaining: ['6857']
+      x-ratelimit-reset: ['1441152000']
+    status: {code: 200, message: OK}
+version: 1

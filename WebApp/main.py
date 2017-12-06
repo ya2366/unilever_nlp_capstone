@@ -6,9 +6,11 @@ import TextRank
 import multi_senti_func
 import pandas as pd
 from werkzeug.utils import secure_filename
+from sentiment import get_sentiment
+from amazon_review_crawler import *
 
 uploadFolder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
-
+print(uploadFolder)
 import summary_LSA
 import preprocessing
 import text_rank_summary
@@ -72,6 +74,55 @@ def upload_file():
       return render_template('upload.html', results = 'file uploaded successfully.')
     else:
       return render_template('upload.html', results = 'file not uploaded.')
+
+#nitesh
+@app.route("/sentimental_analysis_english")
+def sentiment_analysis():
+    return render_template("sentiment.html")
+
+@app.route("/get_sentiment_score",methods=['POST'])
+def get_sentiment_score():
+    text = request.form['text']
+    title = request.form['title']
+    #print("Get Form data")
+    t_score, s_score = get_sentiment(text, title)
+    context = dict() #input back
+    context['text'] = text #result
+    context['title'] = title
+    context['text_score']= t_score
+    context['summary_score']= s_score
+    #print("Context: ",context)
+    return render_template("sentiment_score.html", **context)
+
+
+
+#nitesh
+@app.route("/crawler")
+def crawler():
+    return render_template("crawler.html")
+
+@app.route("/get_amazon_file", methods=['POST'])
+def get_file():
+    print("Here")
+    product_url=request.form['product_url']
+    print(product_url)
+    num_reviews=int(request.form['num_reviews'])
+    print(num_reviews)
+    # print(product_url)
+    product_name, message = extractReviews(product_url, num_reviews)
+
+
+    # surveys = pd.read_excel(filename, header=0)
+    # col_name = request.form['textrank_question']
+    # text = ""
+    # col = surveys[col_name]
+    # for i in range(len(col)):
+    #     text = text + " " + col[i]
+    # top_keywords=TextRank.extractKeyphrases(text,int(top_n))
+    context=dict()
+    context['message']=message
+    return render_template("crawler_result.html",**context)
+
 
 #yunsi
 @app.route("/sentimental_analysis_multilingual")

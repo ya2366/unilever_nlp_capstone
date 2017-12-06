@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: url=http%3A%2F%2Fwww.bbc.co.uk%2Fnews%2Fbusiness-25821345
+    headers:
+      accept: [application/json]
+      accept-encoding: ['gzip, deflate']
+      content-type: [application/x-www-form-urlencoded]
+      user-agent: [Aylien Text API Python 0.4.0]
+    method: POST
+    uri: https://api.aylien.com/api/v1/concepts
+  response:
+    body: {string: "{\n  \"text\": \"Boeing confirms $4bn order from GE\\nGeneral
+        Electric's aircraft leasing and financing arm has confirmed that it has placed
+        an order for 40 Boeing planes worth $4bn (\xA32.3bn) at list prices.\\n\\nThe
+        order was booked last year, but so far had been attributed to an \\\"unidentified
+        customer\\\" by Boeing.\\n\\nGE Capital Aviation Services (GECAS) said the
+        new planes would help it meet growing demand for more fuel-efficient aircraft
+        from its customers.\\n\\n\\\"Our airline customers require more fuel-efficient
+        aircraft to compete in the marketplace,\\\" Norman CT Liu, chief executive
+        of GECAS, said in a statement.\\n\\nGECAS has now placed total orders for
+        95 units of 737 MAX 8 airplanes and 387 of the next-generation 737-800 jets
+        making it the biggest buyer of the two models in the leasing industry.\\n\\nA
+        slowdown in global travel demand, coupled with high fuel prices, has hurt
+        the profitability of many airlines across the globe in recent years.\\n\\nAs
+        a result, airlines have been looking to keep their costs in check to try and
+        sustain their profitability.\\n\\nThat has in turn caused a rise in demand
+        for fuel-efficient aircraft.\\n\\nThe 100-200 seat narrow-body - or single-aisle
+        - aircraft market is forecast to generate $20 trillion (\xA312.8tn) over the
+        next 20 years.\\n\\nThe sector is currently dominated by Airbus's A320 and
+        Boeing's 737 aircraft, but other firms are also looking to tap into the market.\\n\\nBoeing
+        has claimed that its next-generation 737's offer the \\\"lowest operating
+        costs in its class\\\".\",\n  \"language\": \"en\",\n  \"concepts\": {\n    \"http://dbpedia.org/resource/GE_Capital_Aviation_Services\":
+        {\n      \"surfaceForms\": [{\n        \"string\": \"GE Capital Aviation Services\",\n
+        \       \"score\": 1.0,\n        \"offset\": 294\n      }, {\n        \"string\":
+        \"GECAS\",\n        \"score\": 1.0,\n        \"offset\": 324\n      }],\n
+        \     \"types\": [\"http://dbpedia.org/ontology/Company\"],\n      \"support\":
+        76\n    },\n    \"http://dbpedia.org/resource/Boeing_737_MAX\": {\n      \"surfaceForms\":
+        [{\n        \"string\": \"737 MAX\",\n        \"score\": 1.0,\n        \"offset\":
+        644\n      }],\n      \"types\": [\"http://dbpedia.org/ontology/Aircraft\"],\n
+        \     \"support\": 102\n    },\n    \"http://dbpedia.org/resource/GE_Aviation\":
+        {\n      \"surfaceForms\": [{\n        \"string\": \"General Electric\",\n
+        \       \"score\": 0.9999816838164277,\n        \"offset\": 35\n      }],\n
+        \     \"types\": [\"http://dbpedia.org/ontology/Company\"],\n      \"support\":
+        316\n    },\n    \"http://dbpedia.org/resource/Narrow-body_aircraft\": {\n
+        \     \"surfaceForms\": [{\n        \"string\": \"narrow-body\",\n        \"score\":
+        1.0,\n        \"offset\": 1124\n      }],\n      \"types\": [\"\"],\n      \"support\":
+        146\n    },\n    \"http://dbpedia.org/resource/Boeing\": {\n      \"surfaceForms\":
+        [{\n        \"string\": \"Boeing\",\n        \"score\": 0.9992772764371931,\n
+        \       \"offset\": 0\n      }],\n      \"types\": [\"http://dbpedia.org/ontology/Company\"],\n
+        \     \"support\": 7989\n    },\n    \"http://dbpedia.org/resource/Airbus_A320_family\":
+        {\n      \"surfaceForms\": [{\n        \"string\": \"A320\",\n        \"score\":
+        0.9991307522994758,\n        \"offset\": 1290\n      }],\n      \"types\":
+        [\"http://dbpedia.org/ontology/Aircraft\"],\n      \"support\": 1896\n    },\n
+        \   \"http://dbpedia.org/resource/Airbus\": {\n      \"surfaceForms\": [{\n
+        \       \"string\": \"Airbus\",\n        \"score\": 0.9743283574963982,\n
+        \       \"offset\": 1281\n      }],\n      \"types\": [\"http://dbpedia.org/ontology/Company\"],\n
+        \     \"support\": 3125\n    },\n    \"http://dbpedia.org/resource/Nauru_Airlines\":
+        {\n      \"surfaceForms\": [{\n        \"string\": \"Our airline\",\n        \"score\":
+        1.0,\n        \"offset\": 440\n      }],\n      \"types\": [\"\"],\n      \"support\":
+        55\n    }\n  }\n}"}
+    headers:
+      connection: [keep-alive]
+      content-length: ['3628']
+      content-type: [application/json;charset=UTF-8]
+      date: ['Tue, 01 Sep 2015 15:39:30 GMT']
+      server: [openresty/1.7.7.2]
+      x-ratelimit-limit: ['6900']
+      x-ratelimit-remaining: ['6867']
+      x-ratelimit-reset: ['1441152000']
+    status: {code: 200, message: OK}
+version: 1
