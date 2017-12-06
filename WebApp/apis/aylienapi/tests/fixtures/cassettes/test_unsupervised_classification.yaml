@@ -1,0 +1,50 @@
+interactions:
+- request:
+    body: url=http%3A%2F%2Ftechcrunch.com%2F2015%2F07%2F16%2Fmicrosoft-will-never-give-up-on-mobile&class=technology&class=sports
+    headers:
+      accept: [application/json]
+      accept-encoding: ['gzip, deflate']
+      content-type: [application/x-www-form-urlencoded]
+      user-agent: [Aylien Text API Python 0.4.0]
+    method: POST
+    uri: https://api.aylien.com/api/v1/classify/unsupervised
+  response:
+    body: {string: "{\"text\":\"When Microsoft announced its wrenching\_$7.6 billion
+        write-down last week, it was\_easy to presume\_that the company\_was giving
+        up on\_mobile. At the very least, the financial avalanche\_sent a strong signal
+        that Windows phone in its current guise has failed in a major\_way.\\n\\nThe
+        7,800 people sacked in the process, the majority of whom came from the Windows
+        phone division, simply accentuated\_that point.\\n\\nMicrosoft has badly wanted
+        to be a player in the handset wars, but its market share numbers tell a consistently
+        wretched\_tale. In the US, it has never managed more than a crawl, and is
+        currently stuck\_at around the 3 percent mark.\_The company has seen somewhat
+        higher numbers in some European markets, but there has been evidence that
+        even those relative\_cratonic bastions have eroded in recent quarters.\\n\\nLuckily
+        or smartly, Microsoft has placed more than one mobile bet and it doesn\u2019t
+        intend to live and die with handsets. It has other\_bullets left in the chamber
+        including Windows 10 and the cross-platform mobile apps too.\\n\\nWhatever
+        happens, Microsoft can ultimately never walk away from\_mobile because giving
+        up would essentially be ceding a massive portion of the\_future of computing,
+        and it simply can\u2019t afford to do that.\\n\\nAfter some time in the soup,
+        Microsoft has finally detailed its Windows mobile\_strategy well enough in
+        the last week that we can understand it \u2014 whether that\u2019s referring
+        to the operating system level, hardware or cross-platform apps. Leaning on
+        Mary Jo Foley\u2019s excellent interview with CEO Satya Nadella, and the write-down,
+        we can come to the following conclusions:\\n\\nThe company made a large wager
+        through Windows 10\u2019s pricing to bolster Windows mobile.\\n\\nThat\u2019s
+        quite plain: Microsoft wanted to go after phone market share in the long term,
+        and selling Windows at its old price points would limit broader Windows 10
+        adoption, eroding at the company\u2019s larger value proposition of having
+        one platform across all your devices. Put another way, the company is foregoing
+        \",\"classes\":[{\"label\":\"technology\",\"score\":0.022222222222222223},{\"label\":\"sports\",\"score\":0.0}]}"}
+    headers:
+      connection: [keep-alive]
+      content-length: ['2152']
+      content-type: [application/json;charset=UTF-8]
+      date: ['Tue, 01 Sep 2015 15:39:44 GMT']
+      server: [openresty/1.7.7.2]
+      x-ratelimit-limit: ['6900']
+      x-ratelimit-remaining: ['6859']
+      x-ratelimit-reset: ['1441152000']
+    status: {code: 200, message: OK}
+version: 1

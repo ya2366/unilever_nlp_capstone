@@ -1,0 +1,44 @@
+interactions:
+- request:
+    body: phrase=android
+    headers:
+      accept: [application/json]
+      accept-encoding: ['gzip, deflate']
+      content-type: [application/x-www-form-urlencoded]
+      user-agent: [Aylien Text API Python 0.4.0]
+    method: POST
+    uri: https://api.aylien.com/api/v1/related
+  response:
+    body: {string: !!python/unicode "{\n  \"phrase\": \"android\",\n  \"related\":
+        [{\n    \"phrase\": \"android version\",\n    \"distance\": 0.3989213705062866\n
+        \ }, {\n    \"phrase\": \"ios\",\n    \"distance\": 0.41522765159606934\n
+        \ }, {\n    \"phrase\": \"android devices\",\n    \"distance\": 0.423676073551178\n
+        \ }, {\n    \"phrase\": \"android lollipop\",\n    \"distance\": 0.4261924624443054\n
+        \ }, {\n    \"phrase\": \"iphone\",\n    \"distance\": 0.42704862356185913\n
+        \ }, {\n    \"phrase\": \"android os\",\n    \"distance\": 0.42750751972198486\n
+        \ }, {\n    \"phrase\": \"froyo\",\n    \"distance\": 0.4317677617073059\n
+        \ }, {\n    \"phrase\": \"smartphone\",\n    \"distance\": 0.4510107636451721\n
+        \ }, {\n    \"phrase\": \"android platform\",\n    \"distance\": 0.45518678426742554\n
+        \ }, {\n    \"phrase\": \"ios platforms\",\n    \"distance\": 0.45898914337158203\n
+        \ }, {\n    \"phrase\": \"touchwiz ui\",\n    \"distance\": 0.4686887264251709\n
+        \ }, {\n    \"phrase\": \"ios devices\",\n    \"distance\": 0.47086143493652344\n
+        \ }, {\n    \"phrase\": \"ice cream sandwich\",\n    \"distance\": 0.4727413058280945\n
+        \ }, {\n    \"phrase\": \"android device\",\n    \"distance\": 0.4732778072357178\n
+        \ }, {\n    \"phrase\": \"apple ios\",\n    \"distance\": 0.47654372453689575\n
+        \ }, {\n    \"phrase\": \"windows phone\",\n    \"distance\": 0.47724878787994385\n
+        \ }, {\n    \"phrase\": \"ios version\",\n    \"distance\": 0.47820836305618286\n
+        \ }, {\n    \"phrase\": \"app\",\n    \"distance\": 0.4802556037902832\n  },
+        {\n    \"phrase\": \"custom roms\",\n    \"distance\": 0.4839458465576172\n
+        \ }, {\n    \"phrase\": \"android apps\",\n    \"distance\": 0.4847920536994934\n
+        \ }]\n}"}
+    headers:
+      connection: [keep-alive]
+      content-length: ['1470']
+      content-type: [application/json;charset=UTF-8]
+      date: ['Tue, 01 Sep 2015 15:39:35 GMT']
+      server: [openresty/1.7.7.2]
+      x-ratelimit-limit: ['6900']
+      x-ratelimit-remaining: ['6863']
+      x-ratelimit-reset: ['1441152000']
+    status: {code: 200, message: OK}
+version: 1

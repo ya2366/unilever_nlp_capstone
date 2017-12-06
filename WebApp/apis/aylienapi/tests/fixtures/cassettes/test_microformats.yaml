@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: url=http%3A%2F%2Fcodepen.io%2Fanon%2Fpen%2FZYaKbz.html
+    headers:
+      accept: [application/json]
+      accept-encoding: ['gzip, deflate']
+      content-type: [application/x-www-form-urlencoded]
+      user-agent: [Aylien Text API Python 0.4.0]
+    method: POST
+    uri: https://api.aylien.com/api/v1/microformats
+  response:
+    body: {string: !!python/unicode "{\n  \"hCards\": [{\n    \"birthday\": \"1951-05-26\",\n
+        \   \"organization\": \"Sally Ride Science\",\n    \"telephoneNumber\": \"+1.818.555.1212\",\n
+        \   \"location\": {\n      \"id\": \"9f15e27ff48eb28c57f49fb177a1ed0af78f93ab\",\n
+        \     \"latitude\": \"37.386013\",\n      \"longitude\": \"-122.082932\"\n
+        \   },\n    \"photo\": \"http://example.com/sk.jpg\",\n    \"email\": \"sally@example.com\",\n
+        \   \"url\": \"http://flickr.com/people/tantek/\",\n    \"fullName\": \"Sally
+        Ride\",\n    \"structuredName\": {\n      \"familyName\": \"van der Harten\",\n
+        \     \"givenName\": \"Sally\",\n      \"honorificSuffix\": \"Ph.D.\",\n      \"id\":
+        \"72e52c29d369dfd3704ffb4b9bb95d65219d0205\",\n      \"additionalName\": \"K.\",\n
+        \     \"honorificPrefix\": \"Dr.\"\n    },\n    \"logo\": \"http://www.abc.com/pub/logos/abccorp.jpg\",\n
+        \   \"id\": \"7d021199b0d826eef60cd31279037270e38715cd\",\n    \"note\": \"1st
+        American woman in space.\",\n    \"address\": {\n      \"streetAddress\":
+        \"123 Main st.\",\n      \"countryName\": \"U.S.A\",\n      \"postalCode\":
+        \"91316\",\n      \"id\": \"00cc73c1f9773a66613b04f11ce57317eecf636b\",\n
+        \     \"region\": \"California\",\n      \"locality\": \"Los Angeles\"\n    },\n
+        \   \"category\": \"physicist\"\n  }]\n}"}
+    headers:
+      connection: [keep-alive]
+      content-length: ['1105']
+      content-type: [application/json;charset=UTF-8]
+      date: ['Tue, 01 Sep 2015 15:39:37 GMT']
+      server: [openresty/1.7.7.2]
+      x-ratelimit-limit: ['6900']
+      x-ratelimit-remaining: ['6861']
+      x-ratelimit-reset: ['1441152000']
+    status: {code: 200, message: OK}
+version: 1

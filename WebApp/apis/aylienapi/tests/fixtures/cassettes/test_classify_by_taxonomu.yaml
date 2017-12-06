@@ -1,0 +1,32 @@
+interactions:
+- request:
+    body: text=John+is+a+very+good+football+player
+    headers:
+      accept: [application/json]
+      accept-encoding: ['gzip, deflate']
+      content-type: [application/x-www-form-urlencoded]
+      user-agent: [Aylien Text API Python 0.5.0]
+    method: POST
+    uri: https://api.aylien.com/api/v1/classify/iab-qag
+  response:
+    body: {string: !!python/unicode "{\n  \"text\": \"John is a very good football
+        player\",\n  \"taxonomy\": \"iab-qag\",\n  \"language\": \"en\",\n  \"categories\":
+        [{\n    \"confident\": true,\n    \"score\": 0.34306295902115236,\n    \"label\":
+        \"Football\",\n    \"links\": [{\n      \"rel\": \"self\",\n      \"link\":
+        \"https://api.aylien.com/api/v1/classify/taxonomy/iab-qag/IAB17-12\"\n    },
+        {\n      \"rel\": \"parent\",\n      \"link\": \"https://api.aylien.com/api/v1/classify/taxonomy/iab-qag/IAB17\"\n
+        \   }],\n    \"id\": \"IAB17-12\"\n  }, {\n    \"confident\": true,\n    \"score\":
+        0.2815441066678086,\n    \"label\": \"Sports\",\n    \"links\": [{\n      \"rel\":
+        \"self\",\n      \"link\": \"https://api.aylien.com/api/v1/classify/taxonomy/iab-qag/IAB17\"\n
+        \   }],\n    \"id\": \"IAB17\"\n  }]\n}"}
+    headers:
+      connection: [keep-alive]
+      content-length: ['687']
+      content-type: [application/json;charset=UTF-8]
+      date: ['Thu, 17 Sep 2015 11:36:19 GMT']
+      server: [openresty/1.7.7.2]
+      x-ratelimit-limit: ['6900']
+      x-ratelimit-remaining: ['6889']
+      x-ratelimit-reset: ['1442534400']
+    status: {code: 200, message: OK}
+version: 1

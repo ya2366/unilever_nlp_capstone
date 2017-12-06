@@ -1,12 +1,16 @@
 from flask import Flask, render_template,request,redirect, url_for, flash
-from flask_uploads import UploadSet, configure_uploads,DOCUMENTS
+#from flask_uploads import UploadSet, configure_uploads,DOCUMENTS
 import os
 import rake
 import TextRank
+import multi_senti_func
 import pandas as pd
 from werkzeug.utils import secure_filename
+from sentiment import get_sentiment
+from amazon_review_crawler import *
 
 uploadFolder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
+print(uploadFolder)
 import summary_LSA
 import preprocessing
 import text_rank_summary
@@ -71,6 +75,113 @@ def upload_file():
       return render_template('upload.html', results = 'file uploaded successfully.')
     else:
       return render_template('upload.html', results = 'file not uploaded.')
+
+#nitesh
+@app.route("/sentimental_analysis_english")
+def sentiment_analysis():
+    return render_template("sentiment.html")
+
+@app.route("/get_sentiment_score",methods=['POST'])
+def get_sentiment_score():
+    text = request.form['text']
+    title = request.form['title']
+    #print("Get Form data")
+    t_score, s_score = get_sentiment(text, title)
+    context = dict() #input back
+    context['text'] = text #result
+    context['title'] = title
+    context['text_score']= t_score
+    context['summary_score']= s_score
+    #print("Context: ",context)
+    return render_template("sentiment_score.html", **context)
+
+
+
+#nitesh
+@app.route("/crawler")
+def crawler():
+    return render_template("crawler.html")
+
+@app.route("/get_amazon_file", methods=['POST'])
+def get_file():
+    print("Here")
+    product_url=request.form['product_url']
+    print(product_url)
+    num_reviews=int(request.form['num_reviews'])
+    print(num_reviews)
+    # print(product_url)
+    product_name, message = extractReviews(product_url, num_reviews)
+
+
+    # surveys = pd.read_excel(filename, header=0)
+    # col_name = request.form['textrank_question']
+    # text = ""
+    # col = surveys[col_name]
+    # for i in range(len(col)):
+    #     text = text + " " + col[i]
+    # top_keywords=TextRank.extractKeyphrases(text,int(top_n))
+    context=dict()
+    context['message']=message
+    return render_template("crawler_result.html",**context)
+
+
+#yunsi
+@app.route("/sentimental_analysis_multilingual")
+def multilingual_analysis():
+    return render_template("multi_senti.html")
+#yunsi
+@app.route("/get_senti_infor",methods=['POST'])
+def get_senti_infor():
+    text = request.form['text']
+    title = request.form['title']
+    #print("Get Form data")
+    trans_text = multi_senti_func.translation_to_eng(text)
+    trans_title = multi_senti_func.translation_to_eng(title)
+    text_token = multi_senti_func.tokenization(trans_text)
+    title_token = multi_senti_func.tokenization(trans_title)
+    text_pos = multi_senti_func.pos_mark(text_token)
+    title_pos = multi_senti_func.pos_mark(title_token)
+    wn_text_senti_score = multi_senti_func.senti_score(text_pos)
+    wn_title_senti_score = multi_senti_func.senti_score(title_pos)
+    vander_text_senti_score = multi_senti_func.vader_senti_score(trans_text)
+    vander_title_senti_score = multi_senti_func.vader_senti_score(trans_title)
+    adjusted_score = multi_senti_func.adjusted_score(wn_text_senti_score,wn_title_senti_score,vander_text_senti_score,vander_title_senti_score)
+    context = dict() #input back
+    context['text'] = text #result
+    context['title'] = title
+    context['trans_text'] = trans_text #result
+    context['trans_title'] = trans_title
+    context['wn_text_senti_score']= wn_text_senti_score
+    context['wn_title_senti_score']= wn_title_senti_score
+    context['vander_text_senti_score']= vander_text_senti_score
+    context['vander_title_senti_score']= vander_title_senti_score
+    context['adjusted_score']= adjusted_score
+    #print("Context: ",context)
+    return render_template("multi_senti_score.html", **context)
+
+#yunsi
+@app.route("/survey_senti",methods=['POST'])
+def survey_senti():
+    before_sur = request.form['before_sur']
+    after_sur = request.form['after_sur']
+    #print("Get Form data")
+    trans_bef = multi_senti_func.translation_to_eng(before_sur)
+    trans_aft = multi_senti_func.translation_to_eng(after_sur)
+    bef_token = multi_senti_func.tokenization(trans_bef)
+    aft_token = multi_senti_func.tokenization(trans_aft)
+    bef_pos = multi_senti_func.pos_mark(bef_token)
+    aft_pos = multi_senti_func.pos_mark(aft_token)
+    wn_bef_senti_score = multi_senti_func.senti_score(bef_pos)
+    wn_aft_senti_score = multi_senti_func.senti_score(aft_pos)
+    context = dict() #input back
+    context['before_sur'] = before_sur #result
+    context['after_sur'] = after_sur
+    context['trans_bef'] = trans_bef #result
+    context['trans_aft'] = trans_aft
+    context['wn_bef_senti_score']= wn_bef_senti_score
+    context['wn_aft_senti_score']= wn_aft_senti_score
+    #print("Context: ",context)
+    return render_template("multi_survey_score.html", **context)
 
 @app.route('/get_keyphrases',methods=['POST'])
 def get_keyphrases():
