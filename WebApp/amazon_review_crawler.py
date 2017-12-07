@@ -51,11 +51,6 @@ def getReviews(page, product_name):
 	except:
 		return 0
 
-def saveReviews(product_name):
-	global reviews
-	df1 = pd.DataFrame.from_dict(reviews)
-	writer = pd.ExcelWriter(product_name + '.xlsx')
-	df1.to_excel(writer)
 
 def extractReviews(product_url, num_reviews):
 	global reviews
@@ -74,15 +69,11 @@ def extractReviews(product_url, num_reviews):
 
 	for pageno in range(total_pages):
 		page = product_page + "/ref=cm_cr_getr_d_paging_btm_" + str(pageno) + "?ie=UTF8&reviewerType=all_reviews&pageNumber=" + str(pageno)
-		print(page)
 		total = getReviews(page, product_name)
 
 		if total == 0:
-			saveReviews(product_name)
-			return product_name, "Unsuccessful!! Retrieved only  " + str(total_reviews) + "  reviews"
+			return reviews, product_name, "Unsuccessful!! Retrieved only  " + str(total_reviews) + "  reviews"
 
 		total_reviews += total
 
-	saveReviews(product_name)
-
-	return product_name, "Successful!! Retrieved total of  " + str(total_reviews) + "  reviews"
+	return reviews, product_name, "Successful!! Retrieved total of  " + str(total_reviews) + "  reviews"

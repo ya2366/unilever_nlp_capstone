@@ -94,6 +94,13 @@ def upload_file():
 #     #print("Context: ",context)
 #     return render_template("sentiment_score.html", **context)
 
+def saveReviews(product_name, reviews):
+    try:
+        df1 = pd.DataFrame.from_dict(reviews)
+        writer = pd.ExcelWriter(product_name + '.xlsx')
+        df1.to_excel(writer)
+    except:
+        print("Error saving file")
 
 
 #nitesh
@@ -103,15 +110,12 @@ def crawler():
 
 @app.route("/get_amazon_file", methods=['POST'])
 def get_file():
-    print("Here")
     product_url=request.form['product_url']
-    print(product_url)
     num_reviews=int(request.form['num_reviews'])
-    print(num_reviews)
-    # print(product_url)
-    product_name, message = extractReviews(product_url, num_reviews)
+    reviews, product_name, message = extractReviews(product_url, num_reviews)
+    reviews = reviews[:num_reviews]
 
-
+    # saveReviews(product_name, reviews)
     # surveys = pd.read_excel(filename, header=0)
     # col_name = request.form['textrank_question']
     # text = ""
@@ -121,6 +125,8 @@ def get_file():
     # top_keywords=TextRank.extractKeyphrases(text,int(top_n))
     context=dict()
     context['message']=message
+    context['product_name']=product_name
+    context['reviews']=reviews
     return render_template("crawler_result.html",**context)
 
 

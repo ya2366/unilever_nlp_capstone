@@ -14,6 +14,8 @@ Description: A two-column, fixed-width template.
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>Unilever Text Analysis</title>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link href= "{{ url_for('static', filename='default.css') }}" rel="stylesheet" type="text/css" />
@@ -44,16 +46,29 @@ Description: A two-column, fixed-width template.
     <div class="boxed">
       <h1 class="title2"><center>Crawler Results</center></h1>
     </div>
-    <div class="boxed" style="background-color:gold">
-      <div>
-        <h4> Response:  </h4>
-        <div>{{message}}</div>
+      <div  class="w3-container">
+        <h4> Product Name: {{product_name}} </h4>
 
+        <h4> Response:  {{message}}</h4>
+      <table class="w3-table-all w3-card-4">
+        <tr>
+      <th>Title</th>
+      <th>Text</th>
+      <th>Rating</th>
+    </tr>
+    {% for review in reviews %}
+    <tr>
+      <td>{{review['title']}}</td>
+      <td>{{review['text']}}</td>
+      <td>{{review['stars']}}</td>
+    </tr>
+     {% endfor %}
+      </table>
        </div>
+
     </div>
 
     
-  </div>
 
 <!-- end page -->
 </body>
