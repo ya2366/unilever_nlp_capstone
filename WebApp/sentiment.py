@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import time
-import apis.aylienapi.aylienapiclient.textapi
+import WebApp.apis.aylienapi.aylienapiclient.textapi
 
 
 def calculate_score(polarity, polarity_conf):

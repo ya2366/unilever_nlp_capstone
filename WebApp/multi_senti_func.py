@@ -10,7 +10,7 @@ from nltk.classify import SklearnClassifier
 
 import matplotlib.pyplot as plt
 import goslate
-import urllib.request
+#import urllib.request
 from googletrans import Translator
 from nltk.corpus import sentiwordnet as swn
 from nltk.sentiment import util 

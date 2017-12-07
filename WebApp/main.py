@@ -6,7 +6,7 @@ import TextRank
 import multi_senti_func
 import pandas as pd
 from werkzeug.utils import secure_filename
-from sentiment import get_sentiment
+#from sentiment import get_sentiment
 from amazon_review_crawler import *
 
 uploadFolder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
@@ -51,7 +51,7 @@ def get_summarization():
     number_of_concept = request.form["number_of_concept"]
     is_tfidf = request.form["is_tfidf"]
     split_long_sentence = request.form["split_long_sentence"]
-    lsa_result = summary_LSA.summarize(text,l=max_length_of_summary,k=number_of_concept,tfidf=is_tfidf,to_split_length=split_long_sentence)
+    lsa_result = summary_LSA.summarize(text,l=int(max_length_of_summary),k=int(number_of_concept),tfidf=is_tfidf,to_split_length=int(split_long_sentence))
     context = dict()
     context['summarization'] = lsa_result
     return render_template("summarization_result.html", **context)
@@ -76,23 +76,23 @@ def upload_file():
       return render_template('upload.html', results = 'file not uploaded.')
 
 #nitesh
-@app.route("/sentimental_analysis_english")
-def sentiment_analysis():
-    return render_template("sentiment.html")
-
-@app.route("/get_sentiment_score",methods=['POST'])
-def get_sentiment_score():
-    text = request.form['text']
-    title = request.form['title']
-    #print("Get Form data")
-    t_score, s_score = get_sentiment(text, title)
-    context = dict() #input back
-    context['text'] = text #result
-    context['title'] = title
-    context['text_score']= t_score
-    context['summary_score']= s_score
-    #print("Context: ",context)
-    return render_template("sentiment_score.html", **context)
+# @app.route("/sentimental_analysis_english")
+# def sentiment_analysis():
+#     return render_template("sentiment.html")
+#
+# @app.route("/get_sentiment_score",methods=['POST'])
+# def get_sentiment_score():
+#     text = request.form['text']
+#     title = request.form['title']
+#     #print("Get Form data")
+#     t_score, s_score = get_sentiment(text, title)
+#     context = dict() #input back
+#     context['text'] = text #result
+#     context['title'] = title
+#     context['text_score']= t_score
+#     context['summary_score']= s_score
+#     #print("Context: ",context)
+#     return render_template("sentiment_score.html", **context)
 
 
 
