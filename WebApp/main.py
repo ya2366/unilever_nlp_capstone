@@ -142,6 +142,10 @@ def upload_sentiment_bulk():
     df1.rename(index=str, columns=columns,inplace=True)
     reviews=list(df1.T.to_dict().values())[:20]
     
+    if len(reviews) == 0:
+        context['error'] = 2
+        return render_template("bulk_error.html",**context)
+
     reviews = get_sentiment_bulk(reviews)
 
     agg_title_score, agg_text_score, agg_hybrid_score = getAggregatedScores(reviews)
@@ -163,6 +167,10 @@ def get_crawler_sentiment_score():
     num_reviews=int(request.form['num_reviews'])
     reviews, product_id, product_name, message = extractReviews(product_url, num_reviews)
     reviews = reviews[:num_reviews]
+
+    if len(reviews) == 0:
+        context['error'] = 1
+        return render_template("bulk_error.html",**context)
 
     saveReviews(product_name, reviews)
 
