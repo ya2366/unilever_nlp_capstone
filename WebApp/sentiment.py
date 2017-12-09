@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import time
-import apis.aylienapi.aylienapiclient.textapi
+import WebApp.apis.aylienapi.aylienapiclient.textapi
 
 
 def calculate_score(polarity, polarity_conf):
@@ -35,7 +35,7 @@ def calculate_score(polarity, polarity_conf):
 # model = 'general_es' # general_es / general_es / general_fr
 
 def get_sentiment(t, s):
-    aylien = apis.aylienapi.aylienapiclient.textapi.Client("4969e38e", "f8de4ced275a6b449a677d3efeae6e5b")
+    aylien = WebApp.apis.aylienapi.aylienapiclient.textapi.Client("4969e38e", "f8de4ced275a6b449a677d3efeae6e5b")
 
     text_sentiment = aylien.Sentiment({'text': t})
 #     print(text_sentiment)

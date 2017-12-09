@@ -10,6 +10,7 @@ import sklearn.metrics.pairwise
 from sklearn.preprocessing import Normalizer
 from scipy.sparse import csr_matrix
 from preprocessing import *
+import numpy as np
 
 DELIMITER = '\n' + '*' * 30 + ' '
 
@@ -37,6 +38,7 @@ def ortho_proj_vec(vectors, B):
 
 def compute_mean_vector(vectors):
     c = np.mean(vectors, axis=0)
+
     return csr_matrix(c)
 
 
@@ -98,6 +100,9 @@ def sem_vol_max(sentences, vectors, L):
     S.add(sent_q)
 
     b_0 = vec_q / scipy.sparse.linalg.norm(vec_q)
+    print("vec_q",vec_q)
+    print("vec_q type", type(vec_q))
+    print("b_0:  ",b_0 )
     B.add(b_0)
 
     return sentence_add_loop(vectors, sentences, S, B, L)

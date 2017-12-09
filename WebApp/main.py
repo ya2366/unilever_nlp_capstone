@@ -52,7 +52,7 @@ def get_summarization():
     number_of_concept = request.form["number_of_concept"]
     is_tfidf = request.form["is_tfidf"]
     split_long_sentence = request.form["split_long_sentence"]
-    lsa_result = summary_LSA.summarize(text,l=max_length_of_summary,k=number_of_concept,tfidf=is_tfidf,to_split_length=split_long_sentence)
+    lsa_result = summary_LSA.summarize(text,l=int(max_length_of_summary),k=number_of_concept,tfidf=is_tfidf,to_split_length=split_long_sentence)
     context = dict()
     context['summarization'] = lsa_result
     return render_template("summarization_result.html", **context)
