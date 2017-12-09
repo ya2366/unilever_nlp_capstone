@@ -9,10 +9,11 @@ import scipy.sparse
 import sklearn.metrics.pairwise
 from sklearn.preprocessing import Normalizer
 from scipy.sparse import csr_matrix
+from scipy.sparse import lil_matrix
 from preprocessing import *
 
 DELIMITER = '\n' + '*' * 30 + ' '
-
+csr_matrix.__hash__ = object.__hash__
 
 def ortho_proj_vec(vectors, B):
     """
@@ -22,7 +23,7 @@ def ortho_proj_vec(vectors, B):
     :return: Index of furthest vector
     """
     #print(DELIMITER + "Calculating vector with largest distance to subspace of {} basis vectors".format(len(B)))
-    projs = csr_matrix(vectors.shape, dtype=np.int8)  # try coo_matrix?
+    projs = lil_matrix(vectors.shape, dtype=np.int8)  # try coo_matrix?
 
     for b in B:
         p_i = np.multiply(vectors.dot(b.T), b)
@@ -36,8 +37,8 @@ def ortho_proj_vec(vectors, B):
 
 
 def compute_mean_vector(vectors):
-    c = np.mean(vectors, axis=0)
-    return csr_matrix(c)
+    c = np.mean(vectors, axis=0, dtype='float64', out = None)
+    return lil_matrix(c)
 
 
 def compute_primary_basis_vector(vectors, sentences, d, L):
@@ -63,7 +64,7 @@ def compute_primary_basis_vector(vectors, sentences, d, L):
         dists = sklearn.metrics.pairwise.pairwise_distances(vectors, d)
         p = np.argmax(dists)
         total_length = len(sentences[p].split())
-        if type(d) != scipy.sparse.csr.csr_matrix:
+        if type(d) != scipy.sparse.csr.lil_matrix:
             total_length += len(sentences[d].split())
 
     return p
@@ -98,6 +99,9 @@ def sem_vol_max(sentences, vectors, L):
     S.add(sent_q)
 
     b_0 = vec_q / scipy.sparse.linalg.norm(vec_q)
+    print("vec_q", vec_q)
+    print("vec_q_type", type(vec_q))
+    print("b_0", b_0)
     B.add(b_0)
 
     return sentence_add_loop(vectors, sentences, S, B, L)
@@ -161,7 +165,7 @@ def summarize(
     l=50,
     ngram_range=(2,3),
     tfidf=True,
-    use_svd=False,
+    use_svd=True,
     k=50,
     scale_vectors=True,
     to_split_length=50):
@@ -206,7 +210,7 @@ def summarize(
 
         #print(DELIMITER + 'After SVD:')
         #print("U: {}, s: {}, V: {}".format(U.shape, s.shape, V.shape))
-        vectors = csr_matrix(U)
+        vectors = lil_matrix(U)
 
     #print(DELIMITER + 'Run Algorithm:')
     summary = sem_vol_max(sentence_set, vectors, l)
@@ -215,10 +219,10 @@ def summarize(
     number_of_summary_sentence = 3
     count = 0
     while count < number_of_summary_sentence:
-        res += summary[count]
+        res += summary[count] + ". "
         count += 1
 
-    return res
+    return res[1:]
 
     # print(DELIMITER + 'Result:')
     # print(summary)

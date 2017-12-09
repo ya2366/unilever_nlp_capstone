@@ -50,7 +50,7 @@ def get_summarization():
     number_of_concept = request.form["number_of_concept"]
     is_tfidf = request.form["is_tfidf"]
     split_long_sentence = request.form["split_long_sentence"]
-    lsa_result = summary_LSA.summarize(text,l=max_length_of_summary,k=number_of_concept,tfidf=is_tfidf,to_split_length=split_long_sentence)
+    lsa_result = summary_LSA.summarize(text,l=int(max_length_of_summary),k=int(number_of_concept),tfidf=is_tfidf,to_split_length=int(split_long_sentence))
     context = dict()
     context['summarization'] = lsa_result
     return render_template("summarization_result.html", **context)
@@ -96,6 +96,7 @@ def get_sentiment_score():
     context['text_score']= t_score
     context['summary_score']= s_score
     return render_template("sentiment_score.html", **context)
+
 
 def saveReviews(product_name, reviews):
     try:
@@ -194,13 +195,6 @@ def get_file():
     reviews = reviews[:num_reviews]
 
     saveReviews(product_name, reviews)
-    # surveys = pd.read_excel(filename, header=0)
-    # col_name = request.form['textrank_question']
-    # text = ""
-    # col = surveys[col_name]
-    # for i in range(len(col)):
-    #     text = text + " " + col[i]
-    # top_keywords=TextRank.extractKeyphrases(text,int(top_n))
     context=dict()
     context['message']=message
     context['product_name']=product_name
