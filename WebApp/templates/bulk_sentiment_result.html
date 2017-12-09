@@ -54,8 +54,9 @@ Description: A two-column, fixed-width template.
       <th>Title</th>
       <th>Text</th>
       <th>Gold Rating</th>
-      <th>Pred. Title Rating</th>
-      <th>Pred. Text Rating</th>
+      <th>Pred. Title Score</th>
+      <th>Pred. Text Score</th>
+      <th>Hybrid Score</th>
     </tr>
     {% for review in reviews %}
     <tr>
@@ -64,6 +65,7 @@ Description: A two-column, fixed-width template.
       <td>{{review['stars']}}</td>
       <td>{{review['title_score']}}</td>
       <td>{{review['text_score']}}</td>
+      <td>{{review['hybrid_score']}}</td>
     </tr>
      {% endfor %}
       </table>
