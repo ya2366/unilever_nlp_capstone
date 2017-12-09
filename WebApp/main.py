@@ -142,6 +142,8 @@ def upload_sentiment_bulk():
     df1.rename(index=str, columns=columns,inplace=True)
     reviews=list(df1.T.to_dict().values())[:20]
     
+    context=dict()
+
     if len(reviews) == 0:
         context['error'] = 2
         return render_template("bulk_error.html",**context)
@@ -150,7 +152,6 @@ def upload_sentiment_bulk():
 
     agg_title_score, agg_text_score, agg_hybrid_score = getAggregatedScores(reviews)
 
-    context=dict()
     context['product_id']=product_id
     context['reviews']=reviews
 
@@ -168,6 +169,8 @@ def get_crawler_sentiment_score():
     reviews, product_id, product_name, message = extractReviews(product_url, num_reviews)
     reviews = reviews[:num_reviews]
 
+    context=dict()
+
     if len(reviews) == 0:
         context['error'] = 1
         return render_template("bulk_error.html",**context)
@@ -177,7 +180,6 @@ def get_crawler_sentiment_score():
     reviews = get_sentiment_bulk(reviews)
     agg_title_score, agg_text_score, agg_hybrid_score = getAggregatedScores(reviews)
 
-    context=dict()
     context['message']=message
     context['product_name']=product_name
     context['reviews']=reviews
