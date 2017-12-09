@@ -1,3 +1,4 @@
 *.pyc
 /WebApp/StanfordCoreNLP/*
-
+WebApp/__pycache__/*
+WebApp/nohup.out
