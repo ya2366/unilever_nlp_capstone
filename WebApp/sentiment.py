@@ -54,12 +54,12 @@ def get_sentiment(t, s):
 
 
 def getHybridScore(t, s, text_score, sum_score):
-    threshold = 200
+    threshold = 250
     if len(t) > threshold:
         return sum_score
 
     elif sum_score==3:
-        return max(text_score,sum_score)
+        return text_score
 
     elif abs(sum_score-text_score)==3:
         return max(text_score,sum_score)
