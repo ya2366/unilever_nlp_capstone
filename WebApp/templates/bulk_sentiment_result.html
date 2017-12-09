@@ -49,21 +49,33 @@ Description: A two-column, fixed-width template.
       <div  class="w3-container">
         <h4> Product Name: {{product_name}} </h4>
 
-        <h4> Response:  {{message}}</h4>
       <table class="w3-table-all w3-card-4">
         <tr>
       <th>Title</th>
       <th>Text</th>
-      <th>Rating</th>
+      <th>Gold Rating</th>
+      <th>Pred. Title Rating</th>
+      <th>Pred. Text Rating</th>
     </tr>
     {% for review in reviews %}
     <tr>
       <td>{{review['title']}}</td>
       <td>{{review['text']}}</td>
       <td>{{review['stars']}}</td>
+      <td>{{review['title_score']}}</td>
+      <td>{{review['text_score']}}</td>
     </tr>
      {% endfor %}
       </table>
+      <br> <br><br>
+      <h1 class="title2"><center>Aggregated Scores</center></h1>
+
+
+        <h4> Aggregated Title Score: {{agg_title_score}} </h4>
+        <h4> Aggregated Text Score: {{agg_text_score}} </h4>
+        <h4> <b>Aggregated Hybrid Score: {{agg_hybrid_score}} <b></h4>
+      <br> <br><br>
+
        </div>
 
     </div>

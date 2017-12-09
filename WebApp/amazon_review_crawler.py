@@ -57,6 +57,8 @@ def extractReviews(product_url, num_reviews):
 
 	p = product_url.split("/")
 	product_name = p[3]
+	product_id = p[5]
+
 	product_page = "/".join(p[:3]) + '/product-reviews/' + p[5]
 
 	fl = 0
@@ -71,9 +73,9 @@ def extractReviews(product_url, num_reviews):
 		page = product_page + "/ref=cm_cr_getr_d_paging_btm_" + str(pageno) + "?ie=UTF8&reviewerType=all_reviews&pageNumber=" + str(pageno)
 		total = getReviews(page, product_name)
 
-		if total == 0:
-			return reviews, product_name, "Unsuccessful!! Retrieved only  " + str(total_reviews) + "  reviews"
+		if total == 0 and total_reviews == 0:
+			return reviews, product_id, product_name, "Unsuccessful!! Retrieved only  " + str(total_reviews) + "  reviews"
 
 		total_reviews += total
 
-	return reviews, product_name, "Successful!! Retrieved total of  " + str(total_reviews) + "  reviews"
+	return reviews, product_id, product_name, "Successful!! Retrieved total of  " + str(num_reviews) + "  reviews"

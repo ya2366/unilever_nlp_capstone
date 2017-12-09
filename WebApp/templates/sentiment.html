@@ -25,7 +25,7 @@ Description: A two-column, fixed-width template.
 <div id="page">
   <div id="sidebar" style = "height:100vh">
     <div id="logo">
-      <!-- <center><image src = "static/images/unilever.png" height="140px" margin="20px"></image></center> -->
+      <center><image src = "static/images/unilever.png" height="140px" margin="20px"></image></center>
     </div>
     <!-- end header -->
     <div id="menu">
@@ -46,7 +46,38 @@ Description: A two-column, fixed-width template.
     <div class="boxed">
       <h1 class="title2"><center>Welcome to Unilever NLP Page !</center></h1>
       <h1 class="title2"><center>Sentiment Analysis</center></h1>
-      <h2>Input your review text</h2>
+
+
+      <br><br><br>
+      <h2 class="title4"><center>Sentiment Analysis on Amazon Reviews</center></h2>
+
+      <form method="POST" action="/get_crawler_sentiment_score">
+               <p>Enter Amazon Product URL: (eg: https://www.amazon.com/Johnsons-Head-Toe-Gentle-Baby/dp/B00MNSEOSG/)</p>
+              <input type="text" name="product_url">
+              <p>Enter number of reviews to extract: (Range: 1-20)</p>
+              <input type="text" name="num_reviews">
+
+              <center><input type="submit" value="Submit" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;"></center>
+      </form>
+      <br><br><br>
+
+      <h2 class="title4"><center>Sentiment Analysis on Saved Excel Files</center></h2>
+
+        <form action = "/upload_sentiment_bulk" method = "POST" enctype = "multipart/form-data">
+        <p>Upload The excel file here (Only first 20 reviews will be used for analysis</p>
+
+            <input type = "file" name = "file" />
+        <p>Enter Product Id (e.g. B000AO2NXS)</p>
+            
+            <input type="text" name="product_id">
+              <center><input type="submit" value="Submit" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;"></center>
+
+        </form>
+      <br><br><br>
+
+
+      <h2 class="title4"><center>Try out Sentiment Analysis on Single Review</center></h2>
+
       <form method="POST" action="/get_sentiment_score">
           <p>Input the text file that you want to do sentiment analysis on: </p>
           <input type="text" name="text" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
