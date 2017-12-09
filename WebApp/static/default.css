@@ -53,7 +53,14 @@ a:hover {
 	color: #FFFFFF;
 }
 
-
+.title4 {
+	margin: 0;
+	padding: 10px 0;
+	background: url(images/img09.gif) repeat-x left bottom;
+	font-size: 127%;
+	font-weight: normal;
+	color: #135293;
+}
 
 .boxed {
 	padding: 5px 30px 20px 30px;
