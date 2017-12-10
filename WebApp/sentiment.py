@@ -35,7 +35,7 @@ def calculate_score(polarity, polarity_conf):
 # model = 'general_es' # general_es / general_es / general_fr
 
 def get_sentiment(t, s):
-    aylien = apis.aylienapi.aylienapiclient.textapi.Client("4969e38e", "f8de4ced275a6b449a677d3efeae6e5b")
+    aylien = WebApp.apis.aylienapi.aylienapiclient.textapi.Client("4969e38e", "f8de4ced275a6b449a677d3efeae6e5b")
 
     text_sentiment = aylien.Sentiment({'text': t})
 #     print(text_sentiment)
@@ -51,6 +51,50 @@ def get_sentiment(t, s):
     sum_score = calculate_score(sum_polarity, sum_polarity_conf)
     
     return text_score, sum_score
+
+
+def getHybridScore(t, s, text_score, sum_score):
+    threshold = 250
+    if len(t) > threshold:
+        return sum_score
+
+    elif sum_score==3:
+        return text_score
+
+    elif abs(sum_score-text_score)==3:
+        return max(text_score,sum_score)
+
+    else:
+        return (text_score + sum_score) / 2
+
+
+
+def get_sentiment_bulk(reviews):
+    aylien = apis.aylienapi.aylienapiclient.textapi.Client("4969e38e", "f8de4ced275a6b449a677d3efeae6e5b")
+
+    for i in range(len(reviews)):
+        t = reviews[i]['text']
+        s = reviews[i]['title']
+
+
+        text_sentiment = aylien.Sentiment({'text': t})
+    #     print(text_sentiment)
+        text_polarity = text_sentiment['polarity']
+        text_polarity_conf = text_sentiment['polarity_confidence']
+
+        text_score = calculate_score(text_polarity, text_polarity_conf)
+        reviews[i]['text_score'] = text_score
+
+        sum_sentiment = aylien.Sentiment({'text': s})
+        sum_polarity = sum_sentiment['polarity']
+        sum_polarity_conf = sum_sentiment['polarity_confidence']
+
+        sum_score = calculate_score(sum_polarity, sum_polarity_conf)
+        reviews[i]['title_score'] = sum_score
+ 
+        reviews[i]['hybrid_score'] = getHybridScore(t, s, text_score, sum_score)
+    return reviews
+
 # AYLIEN
 # text_matrix = np.zeros([5,5])
 # sum_matrix = np.zeros([5,5])
