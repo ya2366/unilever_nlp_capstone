@@ -277,8 +277,15 @@ def get_keyphrases():
     filename=request.form['name']
     surveys=pd.read_excel(filename,header=0)
     col_name=request.form['question']
+    filter_by=request.form['filter_by']
     text=""
-    col=surveys[col_name]
+    #col=surveys[col_name]
+    product_id=request.form['product_id']
+    if product_id!='':
+        df=surveys.loc[surveys[filter_by]==product_id]
+        col=df[col_name]
+    else:
+        col=surveys[col_name]
     for i in range(len(col)):
         text=text+" "+col[i]
     print(text)
