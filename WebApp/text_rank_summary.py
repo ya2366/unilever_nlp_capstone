@@ -85,6 +85,70 @@ def build_graph(nodes):
 
     return gr
 
+def extractKeyphrases(text,top_n):
+    # tokenize the text using nltk
+    wordTokens = nltk.word_tokenize(text)
+    print("Tokenized Words")
+    # assign POS tags to the words in the text
+    tagged = nltk.pos_tag(wordTokens)
+    textlist = [x[0] for x in tagged]
+    print("Pos Tagging")
+
+    tagged = filter_for_tags(tagged)
+    tagged = normalize(tagged)
+
+    unique_word_set = unique_everseen([x[0] for x in tagged])
+    word_set_list = list(unique_word_set)
+
+    # this will be used to determine adjacent words in order to construct keyphrases with two words
+
+    graph = build_graph(word_set_list)
+    print("Graph Builded")
+
+    # pageRank - initial value of 1.0, error tolerance of 0,0001,
+    calculated_page_rank = nx.pagerank(graph, weight='weight')
+    print("")
+    # most important words in ascending order of importance
+    keyphrases = sorted(calculated_page_rank, key=calculated_page_rank.get, reverse=True)
+
+    # the number of keyphrases returned will be relative to the size of the text (a third of the number of vertices)
+    aThird = int(len(word_set_list) / 3)
+    keyphrases = keyphrases[0:aThird + 1]
+
+    # take keyphrases with multiple words into consideration as done in the paper - if two words are adjacent in the text and are selected as keywords, join them
+    # together
+    modifiedKeyphrases = set([])
+    dealtWith = set([])  # keeps track of individual keywords that have been joined to form a keyphrase
+    i = 0
+    j = 1
+    while j < len(textlist):
+        firstWord = textlist[i]
+        secondWord = textlist[j]
+        if firstWord in keyphrases and secondWord in keyphrases:
+            keyphrase = firstWord + ' ' + secondWord
+            modifiedKeyphrases.add(keyphrase)
+            dealtWith.add(firstWord)
+            dealtWith.add(secondWord)
+        else:
+            if firstWord in keyphrases and firstWord not in dealtWith:
+                modifiedKeyphrases.add(firstWord)
+
+            # if this is the last word in the text, and it is a keyword,
+            # it definitely has no chance of being a keyphrase at this point
+            if j == len(textlist) - 1 and secondWord in keyphrases and secondWord not in dealtWith:
+                modifiedKeyphrases.add(secondWord)
+
+        i = i + 1
+        j = j + 1
+
+    result=list(modifiedKeyphrases)
+    if top_n>len(result):
+        return_result=result
+    else:
+        return_result=result[0:top_n]
+
+    return return_result
+
 def extract_sentences(text, summary_length=100, clean_sentences=False):
     """Return a paragraph formatted summary of the source text.
 

@@ -161,19 +161,25 @@ def sentence_add_loop(vectors, sentences, S, B, L):
     # print("Final sentence count: " + str(len(S)))
     return [str(e) for e in S]
 
-
 def summarize(
         data,
-        l=50,
+        columns=[],
+        l=100,
         ngram_range=(2, 3),
         tfidf=True,
         use_svd=True,
-        k=50,
+        k=100,
         scale_vectors=True,
-        to_split_length=50):
+        use_noun_phrases=False,
+        extract_sibling_sents=True,
+        split_longer_sentences=True,
+        to_split_length=50,
+        exclude_misspelled=True):
     """
     Start summarization task on excel file with columns to summarize
-    :param data: text file to summary
+    :param data: String - Name of excel file with columns to summarize
+        or pandas.DataFrame - DataFrame to summarize by column
+    :param columns: List<String> - Titles in first row of spreadsheet for columns to summarize
     :param l: Integer - Max length of summary (in words)
     :param use_bigrams: Boolean - Whether to summarize based on word counts or bigrams
     :param use_svd: Boolean - Whether to summarize based on top k word concepts
@@ -183,48 +189,125 @@ def summarize(
     :param to_split_length: Integer - Length above which to split sentences
     :return: List of lists of summary sentences
     """
+
+    summaries = []
     data = data.split(".")
     # Iterate over sentence groups for each column and summarize each
-    # for i, sentence_set in enumerate(data):
-    #     print sentence_set
-    #     if split_longer_sentences:
-    #         sentence_set = split_long_sentences(sentence_set, to_split_length)
-    #     if extract_sibling_sents:
-    #         sentence_set = extract_sibling_sentences(sentence_set)
-    sentence_set = data
-    vectors = do_lemmatization(sentence_set)
-    vectors = vectorize(vectors, ngram_range=ngram_range, tfidf=tfidf)
+    for i, sentence_set in enumerate(data):
 
-    if scale_vectors:
-        normalizer = Normalizer()
-        vectors = normalizer.fit_transform(vectors)
+        if split_longer_sentences:
+            data = split_long_sentences(data, to_split_length)
+        if exclude_misspelled:
+            data = do_exclude_misspelled(data)
+        if extract_sibling_sents:
+            data = extract_sibling_sentences(data)
 
-    if use_svd:
-        vectors = vectors.asfptype()
-        # print(vectors.shape)
-        # print(min(vectors.shape))
-        # print(k)
-        if k >= min(vectors.shape):
-            # print("k too large for vectors shape, lowering...")
-            k = min(vectors.shape) - 1
+        vectors = do_lemmatization(data)
+        vectors = remove_stopword_bigrams(vectors)
 
-        U, s, V = scipy.sparse.linalg.svds(vectors, k=k)
+        vectors = vectorize(vectors, ngram_range=ngram_range, tfidf=tfidf)
 
-        # print(DELIMITER + 'After SVD:')
-        # print("U: {}, s: {}, V: {}".format(U.shape, s.shape, V.shape))
-        vectors = lil_matrix(U)
+        if scale_vectors:
+            normalizer = Normalizer()
+            vectors = normalizer.fit_transform(vectors)
 
-    # print(DELIMITER + 'Run Algorithm:')
-    summary = sem_vol_max(sentence_set, vectors, l)
-    ## just want to get top 3 summary
-    res = ""
-    number_of_summary_sentence = 3
-    count = 0
-    while count < number_of_summary_sentence:
-        res += summary[count] + ". "
-        count += 1
+        if use_svd:
+            vectors = vectors.asfptype()
+            print(vectors.shape)
+            print(min(vectors.shape))
+            print(k)
+            if k >= min(vectors.shape):
+                print("k too large for vectors shape, lowering...")
+                k = min(vectors.shape) - 1
 
-    return res[1:]
+            U, s, V = scipy.sparse.linalg.svds(vectors, k=k)
+
+            print(DELIMITER + 'After SVD:')
+            print("U: {}, s: {}, V: {}".format(U.shape, s.shape, V.shape))
+            vectors = csr_matrix(U)
+
+        summary = sem_vol_max(data, vectors, l)
+
+        print(DELIMITER + 'Result:')
+        print(summary)
+
+        toappend = [columns[i], summary, []]
+
+        # todo - ugly
+        if use_noun_phrases:
+            toappend[2] = extract_noun_phrases(data)
+
+        summaries.append(toappend)
+
+    print("Columns summarized: {}".format(len(summaries)))
+
+
+    return summaries
+
+
+        # def summarize(
+#         data,
+#         l=50,
+#         ngram_range=(2, 3),
+#         tfidf=True,
+#         use_svd=True,
+#         k=50,
+#         scale_vectors=True,
+#         to_split_length=50):
+#     """
+#     Start summarization task on excel file with columns to summarize
+#     :param data: text file to summary
+#     :param l: Integer - Max length of summary (in words)
+#     :param use_bigrams: Boolean - Whether to summarize based on word counts or bigrams
+#     :param use_svd: Boolean - Whether to summarize based on top k word concepts
+#     :param k: Integer - Number of top word concepts to incorporate
+#     :param extract_sibling_sents: Boolean - whether to split sentences into individual siblings as defined by adjacent S tags in nltk parse tree
+#     :param split_long_sentences: Boolean - whether to split longer sentences into shorter ones to prevent bias in distance calculation
+#     :param to_split_length: Integer - Length above which to split sentences
+#     :return: List of lists of summary sentences
+#     """
+#     data = data.split(".")
+#     #Iterate over sentence groups for each column and summarize each
+#     for i, sentence_set in enumerate(data):
+#         print sentence_set
+#         if split_longer_sentences:
+#             sentence_set = split_long_sentences(sentence_set, to_split_length)
+#         if extract_sibling_sents:
+#             sentence_set = extract_sibling_sentences(sentence_set)
+#     sentence_set = data
+#     vectors = do_lemmatization(sentence_set)
+#     vectors = vectorize(vectors, ngram_range=ngram_range, tfidf=tfidf)
+#
+#     if scale_vectors:
+#         normalizer = Normalizer()
+#         vectors = normalizer.fit_transform(vectors)
+#
+#     if use_svd:
+#         vectors = vectors.asfptype()
+#         # print(vectors.shape)
+#         # print(min(vectors.shape))
+#         # print(k)
+#         if k >= min(vectors.shape):
+#             # print("k too large for vectors shape, lowering...")
+#             k = min(vectors.shape) - 1
+#
+#         U, s, V = scipy.sparse.linalg.svds(vectors, k=k)
+#
+#         # print(DELIMITER + 'After SVD:')
+#         # print("U: {}, s: {}, V: {}".format(U.shape, s.shape, V.shape))
+#         vectors = lil_matrix(U)
+#
+#     # print(DELIMITER + 'Run Algorithm:')
+#     summary = sem_vol_max(sentence_set, vectors, l)
+#     ## just want to get top 3 summary
+#     res = ""
+#     number_of_summary_sentence = 3
+#     count = 0
+#     while count < number_of_summary_sentence:
+#         res += summary[count] + ". "
+#         count += 1
+#
+#     return res[1:]
 
     # print(DELIMITER + 'Result:')
     # print(summary)

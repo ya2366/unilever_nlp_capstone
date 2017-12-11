@@ -6,13 +6,14 @@ import TextRank
 import multi_senti_func
 import pandas as pd
 from werkzeug.utils import secure_filename
-from sentiment import *
+# from sentiment import *
 from amazon_review_crawler import *
 
 uploadFolder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
 import summary_LSA
 import preprocessing
 import text_rank_summary
+import regenerate
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 allowedTypes = set(['xlsx'])
@@ -47,21 +48,34 @@ def text_summarization_textrank():
 @app.route("/get_summarization", methods = ['POST'])
 def get_summarization():
     text = request.form['text']
-    max_length_of_summary = request.form["max_length_of_summary"]
-    number_of_concept = request.form["number_of_concept"]
-    is_tfidf = request.form["is_tfidf"]
-    split_long_sentence = request.form["split_long_sentence"]
-    lsa_result = summary_LSA.summarize(text,l=int(max_length_of_summary),k=int(number_of_concept),tfidf=is_tfidf,to_split_length=int(split_long_sentence))
+    stoppath = "SmartStoplist.txt"
+    # max_length_of_summary = request.form["max_length_of_summary"]
+    # number_of_concept = request.form["number_of_concept"]
+    # is_tfidf = request.form["is_tfidf"]
+    # split_long_sentence = request.form["split_long_sentence"]
+    #lsa_result = summary_LSA.summarize(data = text)
+    rake_object = rake.Rake(stoppath, 2, 2, 3, 2, 1, 3, 2)
+    keywords_score, keywords_counts, stem_counts = rake_object.run(text, 0.5, 16)
+    generate = regenerate.generate(text)
+    textRank_result = text_rank_summary.extract_sentences(text)
     context = dict()
-    context['summarization'] = lsa_result
+    context["origin_summary"] = text
+    context['summarization'] = generate
+    context['summarization2'] = textRank_result
     return render_template("summarization_result.html", **context)
 
 @app.route("/get_summarization_textrank", methods = ['POST'])
 def get_summarization_textrank():
     text = request.form["text"]
-    textRank_result = text_rank_summary.extract_sentences(text)
+    stoppath = "SmartStoplist.txt"
+    rake_object = rake.Rake(stoppath, 2, 2, 3, 2, 1, 3, 2)
+    keywords_score, keywords_counts, stem_counts = rake_object.run(text, 0.5, 16)
     context = dict()
-    context["summarization"] = textRank_result
+    res = ""
+    for i in keywords_score:
+        res += i[0] + ", "
+    res = "The healthy skin is " + res
+    context["summarization"] = res
     return render_template("summarization_text_rank_result.html", **context)
 
 @app.route('/upload',methods=['GET','POST'])
