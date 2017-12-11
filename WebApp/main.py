@@ -4,6 +4,7 @@ import os
 import rake
 import TextRank
 import multi_senti_func
+import multi_prod_func
 import pandas as pd
 from werkzeug.utils import secure_filename
 from sentiment import get_sentiment
@@ -76,7 +77,7 @@ def upload_file():
       return render_template('upload.html', results = 'file not uploaded.')
 
 #nitesh
-@app.route("/sentimental_analysis_english")
+@app.route("/sentiment_analysis_english")
 def sentiment_analysis():
     return render_template("sentiment.html")
 
@@ -125,7 +126,7 @@ def get_file():
 
 
 #yunsi
-@app.route("/sentimental_analysis_multilingual")
+@app.route("/sentiment_analysis_multilingual")
 def multilingual_analysis():
     return render_template("multi_senti.html")
 #yunsi
@@ -181,6 +182,34 @@ def survey_senti():
     context['wn_aft_senti_score']= wn_aft_senti_score
     #print("Context: ",context)
     return render_template("multi_survey_score.html", **context)
+
+#yunsi
+@app.route("/product_senti",methods=['POST'])
+def product_senti():
+    filenames = request.form['name']
+    df = pd.read_excel(filenames)
+    #print("Get Form data")
+    text_t = multi_prod_func.translation_to_eng(df['text'])
+    title_t = multi_prod_func.translation_to_eng(df['title'])
+    text_token = multi_prod_func.tokenization(text_t)
+    title_token = multi_prod_func.tokenization(title_t)
+    text_tag = multi_prod_func.pos_mark(text_token)
+    title_tag = multi_prod_func.pos_mark(title_token)
+    text_tag = multi_prod_func.pos_mark(text_token)
+    title_tag = multi_prod_func.pos_mark(title_token)
+    text_sentiment = multi_prod_func.senti_score(text_tag)
+    title_sentiment = multi_prod_func.senti_score(title_tag)
+    df['text_Sentiment_Score'] = text_sentiment
+    df['title_Sentiment_Score'] = title_sentiment
+    vader_text_score = multi_prod_func.vader_senti_score(text_t)
+    vader_title_score = multi_prod_func.vader_senti_score(title_t)
+    df['Vader_text_score'] = vader_text_score
+    df['Vader_title_score'] = vader_title_score
+    product_score = multi_prod_func.adj_score_avg(df)
+    context = dict() #input back
+    context['product_score'] = product_score #result
+    #print("Context: ",context)
+    return render_template("multi_product.html", **context)
 
 @app.route('/get_keyphrases',methods=['POST'])
 def get_keyphrases():

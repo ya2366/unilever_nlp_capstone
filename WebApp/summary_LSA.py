@@ -8,8 +8,9 @@ import pandas as pd
 import scipy.sparse
 import sklearn.metrics.pairwise
 from sklearn.preprocessing import Normalizer
-from scipy.sparse import csr_matrix
+#from scipy.sparse import csr_matrix
 from preprocessing import *
+from scipy.sparse import lil_matrix
 
 DELIMITER = '\n' + '*' * 30 + ' '
 
@@ -22,7 +23,7 @@ def ortho_proj_vec(vectors, B):
     :return: Index of furthest vector
     """
     #print(DELIMITER + "Calculating vector with largest distance to subspace of {} basis vectors".format(len(B)))
-    projs = csr_matrix(vectors.shape, dtype=np.int8)  # try coo_matrix?
+    projs = lil_matrix(vectors.shape, dtype=np.int8)  # try coo_matrix?
 
     for b in B:
         p_i = np.multiply(vectors.dot(b.T), b)
@@ -37,7 +38,7 @@ def ortho_proj_vec(vectors, B):
 
 def compute_mean_vector(vectors):
     c = np.mean(vectors, axis=0)
-    return csr_matrix(c)
+    return lil_matrix(c)
 
 
 def compute_primary_basis_vector(vectors, sentences, d, L):
@@ -50,6 +51,7 @@ def compute_primary_basis_vector(vectors, sentences, d, L):
     :param L: Max length of word count in sentence
     :return: Index of vector with largest distance in vectors
     """
+    L = int(L)
     dists = sklearn.metrics.pairwise.pairwise_distances(vectors, d) # should be proj_b0^ui ?
     p = np.argmax(dists)
 
@@ -63,7 +65,7 @@ def compute_primary_basis_vector(vectors, sentences, d, L):
         dists = sklearn.metrics.pairwise.pairwise_distances(vectors, d)
         p = np.argmax(dists)
         total_length = len(sentences[p].split())
-        if type(d) != scipy.sparse.csr.csr_matrix:
+        if type(d) != lil_matrix:
             total_length += len(sentences[d].split())
 
     return p
@@ -81,6 +83,10 @@ def sem_vol_max(sentences, vectors, L):
     B = set()
 
     # Mean vector
+    L = int(L)
+    #print(type(L))
+    #print(vectors)
+    
     c = compute_mean_vector(vectors)
 
     # 1st furthest vector -- Will this always just be the longest sentence?
@@ -98,6 +104,8 @@ def sem_vol_max(sentences, vectors, L):
     S.add(sent_q)
 
     b_0 = vec_q / scipy.sparse.linalg.norm(vec_q)
+    print(b_0)
+    print(type(b_0))
     B.add(b_0)
 
     return sentence_add_loop(vectors, sentences, S, B, L)
@@ -115,6 +123,7 @@ def sentence_add_loop(vectors, sentences, S, B, L):
     :return: List of sentences corresponding to set of vectors in `vectors`
     that maximally span the subspace of `vectors`
     """
+    L = int(L)
     total_length = sum([len(sent.split()) for sent in S])
     exceeded_length_count = 0
 
@@ -206,7 +215,7 @@ def summarize(
 
         #print(DELIMITER + 'After SVD:')
         #print("U: {}, s: {}, V: {}".format(U.shape, s.shape, V.shape))
-        vectors = csr_matrix(U)
+        vectors = lil_matrix(U)
 
     #print(DELIMITER + 'Run Algorithm:')
     summary = sem_vol_max(sentence_set, vectors, l)
