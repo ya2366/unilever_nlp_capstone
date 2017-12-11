@@ -43,10 +43,10 @@ Description: A two-column, fixed-width template.
 		<div class="boxed">
 			<h1 class="title2"><center>Welcome to Unilever NLP Page !</center></h1>
 			
-			{ % if error == 1 % }
+			{% if error == 1 %}
 			<p><center>Crawler was unable to fetch reviews from Amazon. We will be waiting for you to try it out sometime later.</center></p>
 			
-			{ % elif error == 2 % }
+			{% elif error == 2 %}
 			<p><center>No products exist with this product Id in the uploaded file.</center></p>
 			
 			{% endif %}

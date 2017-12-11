@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
 Design by TEMPLATED
@@ -23,7 +21,7 @@ Description: A two-column, fixed-width template.
 <body>
 
 <div id="page">
-  <div id="sidebar">
+  <div id="sidebar" style = "height:100vh">
     <div id="logo">
       <center><image src = "static/images/unilever.png" height="140px" margin="20px"></image></center>
     </div>
@@ -44,17 +42,10 @@ Description: A two-column, fixed-width template.
   <div id="content">
     <div><img src="images/img08.jpg" alt="" width="740" height="220" /></div>
     <div class="boxed">
-      <h1 class="title2"><center>Keyphrase Extraction Result Using TextRank</center></h1>
-      <h2>Keyphrases</h2>
-      <div>
-        {% for n in keywords %}
-        <div>{{n}}</div>
-        {% endfor %}
-      </div>
+      <h1 class="title2"><center>Multilingual Sentiment Analysis Results</center></h1>
+    </div>
+    <div class="boxed" style="background-color:gold">
+      <h2>Product Sentiment Score:</h2>
+      <div>{{product_score}}</div>
     </div>
     
-  </div>
-
-<!-- end page -->
-</body>
-</html>

@@ -32,8 +32,8 @@ Description: A two-column, fixed-width template.
       <ul>
             <li class='first'><a href="/keyphrase_extraction">Keyphrase Extraction page</a></li>
     <li><a href="/summarization">Summarization Page</a></li>
-    <li><a href="/sentimental_analysis_english">Sentimental Analysis English</a></li>
-    <li><a href="/sentimental_analysis_multilingual">Sentimental Analysis Multi-Lingual</a></li>
+    <li><a href="/sentiment_analysis_english">Sentiment Analysis English</a></li>
+    <li><a href="/sentiment_analysis_multilingual">Sentiment Analysis Multi-Lingual</a></li>
     <li><a href="/crawler">Amazon Crawler</a></li>
 
       </ul>
@@ -46,14 +46,22 @@ Description: A two-column, fixed-width template.
     <div class="boxed">
       <h1 class="title2"><center>Welcome to Unilever NLP Page !</center></h1>
       <h1 class="title2"><center>Multiligual Sentiment Analysis</center></h1>
+      <h2>Input your review xlsx</h2>
+      <form method="POST" action="/product_senti">
+          <p>Input your product review xlsx: </p>
+          <input type="text" name="name" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
+          <p>After you finished, click below button to gain the sentiment score</p>
+          <input type="submit" value="Get Product Score" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;">
+      </form>
+
       <h2>Input your review text</h2>
       <form method="POST" action="/get_senti_infor">
           <p>Input the text file that you want to do multilingual sentiment analysis: </p>
           <input type="text" name="text" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
           <p>Input the title if it has </p>
           <input type="text" name="title" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
-          <p>After you finished, click "Submit" to gain the sentiment score</p>
-          <input type="submit" value="Submit Review" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;">
+          <p>After you finished, click below button to gain the sentiment score</p>
+          <input type="submit" value="Get Single Review Score" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;">
       </form>
       <h2>Input your survey comparison text</h2>
       <form method="POST" action="/survey_senti">
@@ -61,8 +69,8 @@ Description: A two-column, fixed-width template.
           <input type="text" name="before_sur" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
           <p>Input the after wash survey data: </p>
           <input type="text" name="after_sur" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
-          <p>After you finished, click "Submit" to gain the sentiment score</p>
-          <input type="submit" value="Submit Survey" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;">
+          <p>After you finished, click below button to gain the sentiment score</p>
+          <input type="submit" value="Get Single Survey Score" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;">
       </form>
     </div>
     
