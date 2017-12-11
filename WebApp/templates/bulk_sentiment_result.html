@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
 Design by TEMPLATED
@@ -16,6 +14,8 @@ Description: A two-column, fixed-width template.
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>Unilever Text Analysis</title>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link href= "{{ url_for('static', filename='default.css') }}" rel="stylesheet" type="text/css" />
@@ -23,7 +23,7 @@ Description: A two-column, fixed-width template.
 <body>
 
 <div id="page">
-  <div id="sidebar">
+  <div id="sidebar" style = "height:100vh">
     <div id="logo">
       <center><image src = "static/images/unilever.png" height="140px" margin="20px"></image></center>
     </div>
@@ -32,8 +32,8 @@ Description: A two-column, fixed-width template.
       <ul>
             <li class='first'><a href="/keyphrase_extraction">Keyphrase Extraction page</a></li>
     <li><a href="/summarization">Summarization Page</a></li>
-    <li><a href="/sentiment_analysis_english">Sentiment Analysis English</a></li>
-    <li><a href="/sentiment_analysis_multilingual">Sentiment Analysis Multi-Lingual</a></li>
+    <li><a href="/sentimental_analysis_english">Sentimental Analysis English</a></li>
+    <li><a href="/sentimental_analysis_multilingual">Sentimental Analysis Multi-Lingual</a></li>
     <li><a href="/crawler">Amazon Crawler</a></li>
 
       </ul>
@@ -44,28 +44,45 @@ Description: A two-column, fixed-width template.
   <div id="content">
     <div><img src="images/img08.jpg" alt="" width="740" height="220" /></div>
     <div class="boxed">
-      <h1 class="title2"><center>Keyphrase Extraction Result Using Rake</center></h1>
-      <h2>Keyphrase and scores</h2>
-      <div>
-        {% for n in keywords_score %}
-        <div>{{n[0]}} {{"{0:.2f}".format(n[1])}}</div>
-        {% endfor %}
-      </div>
-      <h2>Keyphrase and counts</h2>
-      <div>
-        {% for n in keywords_counts %}
-        <div>{{n[0]}} {{n[1]}}</div>
-        {% endfor %}
-      </div>
-      <h2>Stem and counts</h2>
-      <div>
-        {% for n in stem_counts %}
-      <div>{{n[0]}} {{n[1]}}</div>
-        {% endfor %}
-      </div>
+      <h1 class="title2"><center>Crawler Results</center></h1>
     </div>
+      <div  class="w3-container">
+        <h4> Product Name: {{product_name}} </h4>
+
+      <table class="w3-table-all w3-card-4">
+        <tr>
+      <th>Title</th>
+      <th>Text</th>
+      <th>Gold Rating</th>
+      <th>Pred. Title Score</th>
+      <th>Pred. Text Score</th>
+      <th>Hybrid Score</th>
+    </tr>
+    {% for review in reviews %}
+    <tr>
+      <td>{{review['title']}}</td>
+      <td>{{review['text']}}</td>
+      <td>{{review['stars']}}</td>
+      <td>{{review['title_score']}}</td>
+      <td>{{review['text_score']}}</td>
+      <td>{{review['hybrid_score']}}</td>
+    </tr>
+     {% endfor %}
+      </table>
+      <br> <br><br>
+      <h1 class="title2"><center>Aggregated Scores</center></h1>
+
+
+        <h4> Aggregated Title Score: {{agg_title_score}} </h4>
+        <h4> Aggregated Text Score: {{agg_text_score}} </h4>
+        <h4> <b>Aggregated Hybrid Score: {{agg_hybrid_score}} <b></h4>
+      <br> <br><br>
+
+       </div>
+
+    </div>
+
     
-  </div>
 
 <!-- end page -->
 </body>

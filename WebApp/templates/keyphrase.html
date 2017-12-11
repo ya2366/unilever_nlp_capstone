@@ -51,8 +51,12 @@ Description: A two-column, fixed-width template.
       <form method="POST" action="/get_keyphrases">
           <p>Input the file name that you want to extract: (eg: Bar_soup.xlsx)</p>
           <input type="text" name="name">
-          <p>Input the question you want to extract: (eg: What is Healthy Skin?)</p>
+          <p>Input the question you want to extract/Column Name: (eg: What is Healthy Skin?)</p>
           <input type="text" name="question">
+          <p>Input which column you want to filter your row by(Optional): </p>
+          <input type="text" name="filter_by">
+          <p>Input the product ID you want to extract reviews for/Row Name(Optional):</p>
+          <input type="text" name="product_id">
           <p>Minimum character length in a word: (eg:2)</p>
           <input type="text" name="min_char_length">
           <p>Minimum word length in a phrase: (eg:2)</p>

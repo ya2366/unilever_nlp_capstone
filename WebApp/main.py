@@ -7,11 +7,10 @@ import multi_senti_func
 import multi_prod_func
 import pandas as pd
 from werkzeug.utils import secure_filename
-from sentiment import get_sentiment
+from sentiment import *
 from amazon_review_crawler import *
 
 uploadFolder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
-print(uploadFolder)
 import summary_LSA
 import preprocessing
 import text_rank_summary
@@ -37,6 +36,7 @@ def keyphrase_extraction():
 @app.route("/keyphrase_extraction/textrank")
 def keyphrase_extraction_textrank():
     return render_template("textrank.html")
+
 @app.route("/summarization")
 def text_summarization():
     return render_template("summarization.html")
@@ -52,7 +52,7 @@ def get_summarization():
     number_of_concept = request.form["number_of_concept"]
     is_tfidf = request.form["is_tfidf"]
     split_long_sentence = request.form["split_long_sentence"]
-    lsa_result = summary_LSA.summarize(text,l=max_length_of_summary,k=number_of_concept,tfidf=is_tfidf,to_split_length=split_long_sentence)
+    lsa_result = summary_LSA.summarize(text,l=int(max_length_of_summary),k=int(number_of_concept),tfidf=is_tfidf,to_split_length=int(split_long_sentence))
     context = dict()
     context['summarization'] = lsa_result
     return render_template("summarization_result.html", **context)
@@ -76,6 +76,11 @@ def upload_file():
     else:
       return render_template('upload.html', results = 'file not uploaded.')
 
+
+
+
+
+
 #nitesh
 @app.route("/sentiment_analysis_english")
 def sentiment_analysis():
@@ -92,9 +97,101 @@ def get_sentiment_score():
     context['title'] = title
     context['text_score']= t_score
     context['summary_score']= s_score
-    #print("Context: ",context)
     return render_template("sentiment_score.html", **context)
 
+
+def saveReviews(product_name, reviews):
+    try:
+        df1 = pd.DataFrame(reviews)
+        writer = pd.ExcelWriter(product_name + '.xlsx')
+        df1.to_excel(writer)
+        writer.save()
+    except:
+        print("Error saving file")
+
+def getAggregatedScores(reviews):
+    agg_title_score = 0
+    agg_text_score = 0
+    agg_hybrid_score = 0
+    total = 0
+
+    for review in reviews:
+        agg_title_score += review['title_score']
+        agg_text_score += review['text_score']
+        agg_hybrid_score += review['hybrid_score']
+
+        total += 1
+
+    agg_title_score /= total
+    agg_text_score /= total
+    agg_hybrid_score /= total
+
+    return agg_title_score, agg_text_score, agg_hybrid_score
+
+
+@app.route("/upload_sentiment_bulk", methods=['POST'])
+def upload_sentiment_bulk():
+    if request.method == 'POST':
+        f = request.files['file']
+        if f and allowed_file(f.filename):
+          f.save(secure_filename(f.filename))
+  
+    product_id = request.form['product_id']  
+    df = pd.read_excel(f.filename)
+
+    columns = {'reviewText':'text','overall':'stars','summary':'title'}
+    df1=df.loc[df.productID==product_id,columns.keys()]
+    df1.rename(index=str, columns=columns,inplace=True)
+    reviews=list(df1.T.to_dict().values())[:20]
+    
+    context=dict()
+
+    if len(reviews) == 0:
+        context['error'] = 2
+        return render_template("bulk_error.html",**context)
+
+    reviews = get_sentiment_bulk(reviews)
+
+    agg_title_score, agg_text_score, agg_hybrid_score = getAggregatedScores(reviews)
+
+    context['product_id']=product_id
+    context['reviews']=reviews
+
+    context['agg_title_score'] = agg_title_score
+    context['agg_text_score'] = agg_text_score
+    context['agg_hybrid_score'] = agg_hybrid_score
+
+    return render_template("upload_bulk_sentiment_result.html",**context)
+
+
+@app.route("/get_crawler_sentiment_score", methods=['POST'])
+def get_crawler_sentiment_score():
+    product_url=request.form['product_url']
+    num_reviews=int(request.form['num_reviews'])
+    reviews, product_id, product_name, message = extractReviews(product_url, num_reviews)
+    reviews = reviews[:num_reviews]
+
+    context=dict()
+
+    if len(reviews) == 0:
+        context['error'] = 1
+        return render_template("bulk_error.html",**context)
+
+    saveReviews(product_name, reviews)
+
+    reviews = get_sentiment_bulk(reviews)
+    agg_title_score, agg_text_score, agg_hybrid_score = getAggregatedScores(reviews)
+
+    context['message']=message
+    context['product_name']=product_name
+    context['reviews']=reviews
+    
+    context['agg_title_score'] = agg_title_score
+    context['agg_text_score'] = agg_text_score
+    context['agg_hybrid_score'] = agg_hybrid_score
+
+ 
+    return render_template("bulk_sentiment_result.html",**context)
 
 
 #nitesh
@@ -104,24 +201,16 @@ def crawler():
 
 @app.route("/get_amazon_file", methods=['POST'])
 def get_file():
-    print("Here")
     product_url=request.form['product_url']
-    print(product_url)
     num_reviews=int(request.form['num_reviews'])
-    print(num_reviews)
-    # print(product_url)
-    product_name, message = extractReviews(product_url, num_reviews)
+    reviews, product_id, product_name, message = extractReviews(product_url, num_reviews)
+    reviews = reviews[:num_reviews]
 
-
-    # surveys = pd.read_excel(filename, header=0)
-    # col_name = request.form['textrank_question']
-    # text = ""
-    # col = surveys[col_name]
-    # for i in range(len(col)):
-    #     text = text + " " + col[i]
-    # top_keywords=TextRank.extractKeyphrases(text,int(top_n))
+    saveReviews(product_name, reviews)
     context=dict()
     context['message']=message
+    context['product_name']=product_name
+    context['reviews']=reviews
     return render_template("crawler_result.html",**context)
 
 
@@ -217,8 +306,15 @@ def get_keyphrases():
     filename=request.form['name']
     surveys=pd.read_excel(filename,header=0)
     col_name=request.form['question']
+    filter_by=request.form['filter_by']
     text=""
-    col=surveys[col_name]
+    #col=surveys[col_name]
+    product_id=request.form['product_id']
+    if product_id!='':
+        df=surveys.loc[surveys[filter_by]==product_id]
+        col=df[col_name]
+    else:
+        col=surveys[col_name]
     for i in range(len(col)):
         text=text+" "+col[i]
     print(text)
