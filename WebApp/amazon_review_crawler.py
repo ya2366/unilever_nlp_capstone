@@ -16,7 +16,7 @@ def getReviews(page, product_name):
 	html = content.text
 	soup = BeautifulSoup(html, "lxml")
 	total = 0
-
+	print(html)
 	try:
 		for level1 in soup.find_all("div", {'class': 'a-section a-spacing-none reviews-content a-size-base'}):
 			for level2 in level1("div", {'id': 'cm_cr-review_list'}):
@@ -69,10 +69,11 @@ def extractReviews(product_url, num_reviews):
 
 	reviews =  []
 
+	print(total_pages)
 	for pageno in range(total_pages):
 		page = product_page + "/ref=cm_cr_getr_d_paging_btm_" + str(pageno) + "?ie=UTF8&reviewerType=all_reviews&pageNumber=" + str(pageno)
 		total = getReviews(page, product_name)
-
+		print("Total = " + str(total))
 		if total == 0 and total_reviews == 0:
 			return reviews, product_id, product_name, "Unsuccessful!! Retrieved only  " + str(total_reviews) + "  reviews"
 

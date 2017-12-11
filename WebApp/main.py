@@ -174,6 +174,7 @@ def get_crawler_sentiment_score():
     context=dict()
 
     if len(reviews) == 0:
+        print("No reviews fetched")
         context['error'] = 1
         return render_template("bulk_error.html",**context)
 
@@ -206,7 +207,7 @@ def get_file():
     reviews, product_id, product_name, message = extractReviews(product_url, num_reviews)
     reviews = reviews[:num_reviews]
 
-    saveReviews(product_name, reviews)
+    # saveReviews(product_name, reviews)
     context=dict()
     context['message']=message
     context['product_name']=product_name

@@ -35,7 +35,7 @@ def calculate_score(polarity, polarity_conf):
 # model = 'general_es' # general_es / general_es / general_fr
 
 def get_sentiment(t, s):
-    aylien = WebApp.apis.aylienapi.aylienapiclient.textapi.Client("4969e38e", "f8de4ced275a6b449a677d3efeae6e5b")
+    aylien = apis.aylienapi.aylienapiclient.textapi.Client("8f14979e", "4b1ff15f606a003e025a93070a822d54")
 
     text_sentiment = aylien.Sentiment({'text': t})
 #     print(text_sentiment)
