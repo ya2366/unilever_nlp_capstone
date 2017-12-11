@@ -663,6 +663,12 @@ class Rake(object):
             keywords_freq.append([pair[0],keyphrase_lemma_frequency[pair[0]]])
 
         sorted_stem = sorted(six.iteritems(stem_word_scores), key=operator.itemgetter(1), reverse=True)
+        sorted_count=sorted(six.iteritems(keyphrase_lemma_counts),key=operator.itemgetter(1),reverse=True)
+        if top_n>len(sorted_count):
+            top_n_counts=sorted_count
+        else:
+            top_n_counts=sorted_count[0:top_n]
+
         #n_stem=int(len(sorted_stem)/3)
         if top_n>len(sorted_stem):
             top_n_stem=sorted_stem
@@ -676,13 +682,13 @@ class Rake(object):
             stem_counts.append((pair[0], keyphrase_stem_counts[pair[0]]))
             stem_freq.append([pair[0], keyphrase_stem_frequency[pair[0]]])
         return_list['keywords_score']=keywords_score
-        return_list['keywords_counts']=keywords_counts
+        return_list['keywords_counts']=top_n_counts
         return_list['keywords_freq']=keywords_freq
         return_list['stem_score']=stem_score
         return_list['stem_counts']=stem_counts
         return_list['stem_freq']=stem_freq
 
 
-        return keywords_score,keywords_counts,stem_counts
+        return keywords_score,top_n_counts,stem_counts
 
 
