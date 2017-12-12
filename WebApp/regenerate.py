@@ -168,26 +168,17 @@ data = "Moisturizing body wash for winter dry skin. If you are sensitive to scen
 #data = data.split(".")
 # data = spell_check(data)
 # res = pos_mark(tokenization("".join(data)))
-# print res
+
 def get_attributes(data_list):
     candidates = set()
     #data_list = data_list[0]
-    #print data_list
+
     for data in data_list:
         for item in data:
             if (item[1] == "JJ") and (item[0] not in good_attitude and item[0] not in bad_attitude) and len(item[0]) > 1 and item[0] not in adverb:
                 candidates.add(item[0])
     return candidates
-# ut = get_attributes(res)
-# print ut
-# data = do_stemming(data)
-#
-# # print res
-#
-#
-# for i in range(len(data)):
-#     data[i] = handle_neg(data[i])
-#print data
+
 
 
 def summary_attitude(data, good, bad):
@@ -305,7 +296,7 @@ def generate(data):
         contain.add(str(stemmer.stem(j)))
 
     candidates = list(contain)
-    print candidates
+    ## print candidates
     temp_list = set()
     for single_sentence in data:
         single_sentence = single_sentence.lower()
