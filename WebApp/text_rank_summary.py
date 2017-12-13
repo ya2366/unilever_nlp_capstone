@@ -154,9 +154,11 @@ def extract_sentences(text, summary_length=100, clean_sentences=False):
 
     :param text: A string.
     """
+    print (1)
     sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
     sentence_tokens = sent_detector.tokenize(text.strip())
     graph = build_graph(sentence_tokens)
+    print (graph)
 
     calculated_page_rank = nx.pagerank(graph, weight='weight')
 
@@ -166,26 +168,31 @@ def extract_sentences(text, summary_length=100, clean_sentences=False):
 
     # return a 100 word summary
     summary = ' '.join(sentences)
-    summary_words = summary.split()
-    summary_words = summary_words[0:summary_length]
-    dot_indices = [idx for idx, word in enumerate(summary_words) if word.find('.') != -1]
-    if clean_sentences and dot_indices:
-        last_dot = max(dot_indices) + 1
-        summary = ' '.join(summary_words[0:last_dot])
-    else:
-        summary = ' '.join(summary_words)
-    res = ""
-    number_of_sentence = summary.count(".")
-    number_of_summary_sentence = number_of_sentence / 2
-    if number_of_summary_sentence == 0:
-        number_of_summary_sentence = 1
-    count = 0
-    while count < number_of_summary_sentence:
-        res += summary[:summary.find(".") + 1]
-        summary = summary[summary.find(".") + 1:]
-        count += 1
-
-    return res
+    # print (summary)
+    # summary_words = summary.split()
+    # summary_words = summary_words[0:summary_length]
+    # dot_indices = [idx for idx, word in enumerate(summary_words) if word.find('.') != -1]
+    # if clean_sentences and dot_indices:
+    #     last_dot = max(dot_indices) + 1
+    #     summary = ' '.join(summary_words[0:last_dot])
+    # else:
+    #     summary = ' '.join(summary_words)
+    # res = ""
+    # number_of_sentence = summary.count(".")
+    # number_of_summary_sentence = number_of_sentence / 2
+    # if number_of_summary_sentence == 0:
+    #     number_of_summary_sentence = 1
+    # count = 0
+    # while count < number_of_summary_sentence:
+    #     res += summary[:summary.find(".") + 1]
+    #     summary = summary[summary.find(".") + 1:]
+    #     count += 1
+    # print (res)
+    summary = ' '.join(sentences)
+    summaryWords = summary.split()
+    summaryWords = summaryWords[0:101]
+    summary = ' '.join(summaryWords)
+    return summary
 
 
 def write_files(summary, key_phrases, filename):

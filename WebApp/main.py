@@ -9,12 +9,13 @@ import pandas as pd
 from werkzeug.utils import secure_filename
 # from sentiment import *
 from amazon_review_crawler import *
-
-uploadFolder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
 import summary_LSA
 import preprocessing
 import text_rank_summary
 import regenerate
+
+uploadFolder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
+
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 allowedTypes = set(['xlsx'])
@@ -48,35 +49,64 @@ def text_summarization_textrank():
 
 @app.route("/get_summarization", methods = ['POST'])
 def get_summarization():
-    text = request.form['text']
-    stoppath = "SmartStoplist.txt"
     # max_length_of_summary = request.form["max_length_of_summary"]
     # number_of_concept = request.form["number_of_concept"]
     # is_tfidf = request.form["is_tfidf"]
     # split_long_sentence = request.form["split_long_sentence"]
     #lsa_result = summary_LSA.summarize(data = text)
-    rake_object = rake.Rake(stoppath, 2, 2, 3, 2, 1, 3, 2)
-    keywords_score, keywords_counts, stem_counts = rake_object.run(text, 0.5, 16)
-    generate = regenerate.generate(text)
-    textRank_result = text_rank_summary.extract_sentences(text)
+    filename = request.form['name']
+    surveys = pd.read_excel(filename, header=0)
+    col_name = request.form['question']
+    filter_by = request.form['filter_by']
+    print (filename)
+    print (col_name)
+    product_id = request.form['product_id']
+    if product_id != '':
+        df = surveys.loc[surveys[filter_by] == product_id]
+        col = df[col_name]
+    else:
+        col = surveys[col_name]
+    text = ""
+    for i in range(len(col)):
+        text = text + " " + col[i]
+    print(text)
+    if text == "":
+        text = request.form["text"]
+    if text == "":
+        generation = ""
+        origin = ""
+    else:
+        generation, origin = regenerate.generate(text)
+    print (generation)
+    print origin
     context = dict()
-    context["origin_summary"] = text
-    context['summarization'] = generate
-    context['summarization2'] = textRank_result
+    context["origin_summary"] = origin
+    context['summarization'] = generation
     return render_template("summarization_result.html", **context)
 
 @app.route("/get_summarization_textrank", methods = ['POST'])
 def get_summarization_textrank():
-    text = request.form["text"]
-    stoppath = "SmartStoplist.txt"
-    rake_object = rake.Rake(stoppath, 2, 2, 3, 2, 1, 3, 2)
-    keywords_score, keywords_counts, stem_counts = rake_object.run(text, 0.5, 16)
+    filename = request.form['name']
+    surveys = pd.read_excel(filename, header=0)
+    col_name = request.form['question']
+    filter_by = request.form['filter_by']
+    print (filename)
+    print (col_name)
+    product_id = request.form['product_id']
+    if product_id != '':
+        df = surveys.loc[surveys[filter_by] == product_id]
+        col = df[col_name]
+    else:
+        col = surveys[col_name]
+    text = ""
+    for i in range(len(col)):
+        text = text + " " + col[i]
+    print(text)
+    if text == "":
+        text = request.form["text"]
+    textRank_result = text_rank_summary.extract_sentences(text)
     context = dict()
-    res = ""
-    for i in keywords_score:
-        res += i[0] + ", "
-    res = "The healthy skin is " + res
-    context["summarization"] = res
+    context['summarization'] = textRank_result
     return render_template("summarization_text_rank_result.html", **context)
 
 @app.route('/upload',methods=['GET','POST'])

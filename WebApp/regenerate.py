@@ -5,6 +5,9 @@ import nltk
 import text_rank_summary
 from nltk import word_tokenize, pos_tag
 from nltk.corpus import wordnet as wn
+import summary_LSA
+import os
+import io
 
 def spell_check(sentence_list):
     ## the input is a list of sentences
@@ -276,17 +279,24 @@ def sentence_similarity(sentence1, sentence2):
 
 
 def generate(data):
-
-    t = text_rank_summary.extract_sentences(data)
-    t_list = t.split()
-    for i in range(len(t_list)):
-        if  t_list[i] == "I" or t_list[i] == "i":
-            t_list[i] = "Customers"
+    data1 = summary_LSA.summarize(data)
+    lsa = ""
+    for i in data1[0][0]:
+        lsa += i + ". "
+    print (lsa)
+    data = lsa
+    print (5)
+    print (data)
+    # t = text_rank_summary.extract_sentences(data)
+    # t_list = t.split()
+    # for i in range(len(t_list)):
+    #     if  t_list[i] == "I" or t_list[i] == "i":
+    #         t_list[i] = "Customers"
 
     data = data.split(".")
     data = spell_check(data)
     temp = pos_mark(tokenization(" ".join(data)))
-    #print temp
+    print (temp)
     candidates = get_attributes(temp)
     candidates = list(set(candidates))
     contain = set()
@@ -296,7 +306,7 @@ def generate(data):
         contain.add(str(stemmer.stem(j)))
 
     candidates = list(contain)
-    ## print candidates
+    print (candidates)
     temp_list = set()
     for single_sentence in data:
         single_sentence = single_sentence.lower()
@@ -340,7 +350,21 @@ def generate(data):
     res = ""
     for i in temp_list:
         res = res + i  + "."
-    #print attitude + " " + res
-    return attitude + " " + res
+    print (attitude + " " + res)
+    return (attitude + " " + res, lsa)
 
-#print generate(data)
+# def read_data_from_txt():
+#     articles = os.listdir("training")
+#     for article in articles:
+#         if article == "Dove_Body_Wash.txt":
+#             print('Reading articles/' + article)
+#             article_file = io.open('training/' + article, 'r')
+#             text = article_file.read()
+#
+#     return text
+# data = read_data_from_txt()
+# a, p = generate(data)
+# print (1)
+# print (a)
+# print (2)
+# print (p)

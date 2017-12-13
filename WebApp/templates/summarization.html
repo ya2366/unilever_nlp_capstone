@@ -46,12 +46,20 @@ Description: A two-column, fixed-width template.
       <h1 class="title2"><center>Text Summarization Using Improved Latent Semantic Analysis </center></h1>
       <h3><a href="https://unilever-nlp.herokuapp.com/index.html">Try Text Summarization Using LSA from Last Semester</a></h3>
       <form method="POST" action="/get_summarization">
-          <h4>Input the summarization you want to improved: </h4>
-          <textarea type="text" name="text">Moisturizing body wash for winter dry skin. If you are sensitive to scented bath products,you might want to try something else. Consistently leaves my skin, and feeling soft and clean. The smell is nice. I've been using Dove's sensitive skin body wash for years. of the bottle. I thought that was the feeling of clean. Great product. Overall, it's good body wash and I really like it! It lathers well and a little goes a long way. This body wash is great. Dove Sensitive Skin Nourishing Body Wash. Nourishing Moisture. I love this body wash. I do feel nicely moisturized after using the product. This is your standard body wash. It lathers well and has a light, clean scent. I like the scent of the deep moisture a lot better than the scent of the sensitive skin. It is not. I have used Dove products for years. I really like this soap. It smells great and doesn't irritate. I already use Dove products. Love it. I am a big fan of Dove beauty bars. Dove Body Wash with nourishing Moisture, Deep Moisture Nourishing. It is very moisturizing. Highly recommend. I love this product. (Especially in the winter months!) </textarea>
+          <p>Input the file name that you want to extract: (eg: Beauty_review.xlsx)</p>
+          <input type="text" name="name">
+          <p>Input the question you want to extract/Column Name: (eg: reviewText)</p>
+          <input type="text" name="question">
+          <p>Input which column you want to filter your row by: (eg: productID)</p>
+          <input type="text" name="filter_by">
+          <p>Input the product ID you want to extract reviews for/Row Name: (eg: B000AO2NXS)</p>
+          <input type="text" name="product_id">
+          <p> Or input the summarization you want to improved: </p>
+          <textarea type="text" name="text"></textarea>
           <p><input type="submit" value="Submit"></p>
 
       </form>
-      <p><a href="/summarization/textrank">Summarize Survey Data</a></p>
+      <p><a href="/summarization/textrank">Try Summarization Using TextRank</a></p>
 
     </div>
     
