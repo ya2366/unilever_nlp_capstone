@@ -78,7 +78,7 @@ def get_summarization():
     else:
         generation, origin = regenerate.generate(text)
     print (generation)
-    print origin
+    print (origin)
     context = dict()
     context["origin_summary"] = origin
     context['summarization'] = generation
