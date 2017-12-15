@@ -30,11 +30,6 @@ def ortho_proj_vec(vectors, B):
     :param B: Set of unit vectors that form the basis of the subspace
     :return: Index of furthest vector
     """
-
-    #print(DELIMITER + "Calculating vector with largest distance to subspace of {} basis vectors".format(len(B)))
-
-    # print(DELIMITER + "Calculating vector with largest distance to subspace of {} basis vectors".format(len(B)))
-
     projs = lil_matrix(vectors.shape, dtype=np.int8)  # try coo_matrix?
 
     for b in B:
@@ -43,14 +38,10 @@ def ortho_proj_vec(vectors, B):
 
     dists = scipy.sparse.linalg.norm((vectors - projs), axis=1)
 
-    # print("Top distance: {}".format(np.max(dists)))
-    # print("And its index: {}".format(np.argmax(dists)))
     return np.argmax(dists)
 
 
 def compute_mean_vector(vectors):
-
-    c = np.mean(vectors, axis=0)
 
     c = np.mean(vectors, axis=0, dtype='float64', out=None)
 
@@ -69,8 +60,6 @@ def compute_primary_basis_vector(vectors, sentences, d, L):
     """
 
     L = int(L)
-    dists = sklearn.metrics.pairwise.pairwise_distances(vectors, d) # should be proj_b0^ui ?
-
     dists = sklearn.metrics.pairwise.pairwise_distances(vectors, d)  # should be proj_b0^ui ?
 
     p = np.argmax(dists)
@@ -80,7 +69,6 @@ def compute_primary_basis_vector(vectors, sentences, d, L):
     # Include length of first vector if we aren't dealing with `d` as the mean vector. Todo
 
     while total_length > L:
-        # print("Basis vector too long, recalculating...")
         vectors[p] = np.zeros(vectors[p].shape)
         dists = sklearn.metrics.pairwise.pairwise_distances(vectors, d)
         p = np.argmax(dists)
@@ -106,23 +94,18 @@ def sem_vol_max(sentences, vectors, L):
 
     # Mean vector
     L = int(L)
-    #print(type(L))
-    #print(vectors)
-    
     c = compute_mean_vector(vectors)
 
     # 1st furthest vector -- Will this always just be the longest sentence?
     p = compute_primary_basis_vector(vectors, sentences, c, L)
     vec_p = vectors[p]
     sent_p = sentences[p]
-    # print("Sentence furthest from mean: {}".format(sent_p))
     S.add(sent_p)
 
     # 2nd furthest vector
     q = compute_primary_basis_vector(vectors, sentences, vec_p, L)
     vec_q = vectors[q]
     sent_q = sentences[q]
-    # print("Sentence furthest from the first: {}".format(sent_q))
     S.add(sent_q)
 
     b_0 = vec_q / scipy.sparse.linalg.norm(vec_q)
@@ -157,10 +140,6 @@ def sentence_add_loop(vectors, sentences, S, B, L):
 
     for i in range(0, vectors.shape[0]):
         r = ortho_proj_vec(vectors, B)
-        # print(DELIMITER)
-        # print("Furthest sentence: " + sentences[r])
-        # print("Total words: {}".format(total_length))
-        # print("Length of sentence to add: {}".format(len(sentences[r].split())))
 
         new_sentence_length = len(sentences[r].split())
 
@@ -182,8 +161,6 @@ def sentence_add_loop(vectors, sentences, S, B, L):
             vectors[r] = np.zeros(vectors[r].shape)
 
         else:
-            # print("Sentence too long to add to set, or sentence consists only of stopwords")
-            # Temporary hack to prevent us from choosing this vector again:
             vectors[r] = np.zeros(vectors[r].shape)
 
             exceeded_length_count += 1
@@ -193,19 +170,25 @@ def sentence_add_loop(vectors, sentences, S, B, L):
     # print("Final sentence count: " + str(len(S)))
     return [str(e) for e in S]
 
-
 def summarize(
         data,
-        l=50,
+        columns=[],
+        l=100,
         ngram_range=(2, 3),
         tfidf=True,
         use_svd=True,
-        k=50,
+        k=10,
         scale_vectors=True,
-        to_split_length=50):
+        use_noun_phrases=False,
+        extract_sibling_sents=False,
+        split_longer_sentences=True,
+        to_split_length=50,
+        exclude_misspelled=True):
     """
     Start summarization task on excel file with columns to summarize
-    :param data: text file to summary
+    :param data: String - Name of excel file with columns to summarize
+        or pandas.DataFrame - DataFrame to summarize by column
+    :param columns: List<String> - Titles in first row of spreadsheet for columns to summarize
     :param l: Integer - Max length of summary (in words)
     :param use_bigrams: Boolean - Whether to summarize based on word counts or bigrams
     :param use_svd: Boolean - Whether to summarize based on top k word concepts
@@ -215,65 +198,73 @@ def summarize(
     :param to_split_length: Integer - Length above which to split sentences
     :return: List of lists of summary sentences
     """
+
+    summaries = []
     data = data.split(".")
     # Iterate over sentence groups for each column and summarize each
-    # for i, sentence_set in enumerate(data):
-    #     print sentence_set
-    #     if split_longer_sentences:
-    #         sentence_set = split_long_sentences(sentence_set, to_split_length)
-    #     if extract_sibling_sents:
-    #         sentence_set = extract_sibling_sentences(sentence_set)
-    sentence_set = data
-    vectors = do_lemmatization(sentence_set)
-    vectors = vectorize(vectors, ngram_range=ngram_range, tfidf=tfidf)
 
-    if scale_vectors:
-        normalizer = Normalizer()
-        vectors = normalizer.fit_transform(vectors)
+    for i, sentence_set in enumerate([data]):
 
-    if use_svd:
-        vectors = vectors.asfptype()
-        # print(vectors.shape)
-        # print(min(vectors.shape))
-        # print(k)
-        if k >= min(vectors.shape):
-            # print("k too large for vectors shape, lowering...")
-            k = min(vectors.shape) - 1
+        if split_longer_sentences:
+            sentence_set = split_long_sentences(sentence_set, to_split_length)
+            print (1)
+        if exclude_misspelled:
+            sentence_set = do_exclude_misspelled(sentence_set)
+            print (2)
+        if extract_sibling_sents:
+            sentence_set = extract_sibling_sentences(sentence_set)
+            print (3)
 
-        U, s, V = scipy.sparse.linalg.svds(vectors, k=k)
+        vectors = do_lemmatization(sentence_set)
+        vectors = remove_stopword_bigrams(vectors)
+
+        vectors = vectorize(vectors, ngram_range=ngram_range, tfidf=tfidf)
+
+        if scale_vectors:
+            normalizer = Normalizer()
+            vectors = normalizer.fit_transform(vectors)
+
+        if use_svd:
+            vectors = vectors.asfptype()
+            print(vectors.shape)
+            print(min(vectors.shape))
+            print(k)
+            if k >= min(vectors.shape):
+                print("k too large for vectors shape, lowering...")
+                k = min(vectors.shape) - 1
+
+            U, s, V = scipy.sparse.linalg.svds(vectors, k=k)
+
+            print(DELIMITER + 'After SVD:')
+            print("U: {}, s: {}, V: {}".format(U.shape, s.shape, V.shape))
+            vectors = csr_matrix(U)
+
+        summary = sem_vol_max(sentence_set, vectors, l)
+
+        print(DELIMITER + 'Result:')
+        print(summary)
+
+        toappend = [summary, []]
+
+        # todo - ugly
+        if use_noun_phrases:
+            toappend[1] = extract_noun_phrases(sentence_set)
+
+        summaries.append(toappend)
+
+    print("Columns summarized: {}".format(len(summaries)))
 
 
-        #print(DELIMITER + 'After SVD:')
-        #print("U: {}, s: {}, V: {}".format(U.shape, s.shape, V.shape))
+    return summaries
 
-        # print(DELIMITER + 'After SVD:')
-        # print("U: {}, s: {}, V: {}".format(U.shape, s.shape, V.shape))
-
-        vectors = lil_matrix(U)
-
-    # print(DELIMITER + 'Run Algorithm:')
-    summary = sem_vol_max(sentence_set, vectors, l)
-    ## just want to get top 3 summary
-    res = ""
-    number_of_summary_sentence = 3
-    count = 0
-    while count < number_of_summary_sentence:
-        res += summary[count] + ". "
-        count += 1
-
-    return res[1:]
-
-    # print(DELIMITER + 'Result:')
-    # print(summary)
-    # return summary
-    # def read_data_from_txt():
-    #     articles = os.listdir("training")
-    #     for article in articles:
-    #         if article == ".DS_Store":
-    #             continue
-    #         print('Reading articles/' + article)
-    #         article_file = io.open('training/' + article, 'r')
-    #         text = article_file.read()
-    #         summary = summarize(text)
-    #     return summary
-    # read_data_from_txt()
+# def read_data_from_txt():
+#     articles = os.listdir("training")
+#     for article in articles:
+#         if article == "Dove_Body_Wash.txt":
+#             print('Reading articles/' + article)
+#             article_file = io.open('training/' + article, 'r')
+#             text = article_file.read()
+#             print text
+#             summary = summarize(text)
+#     return summary
+# read_data_from_txt()
