@@ -278,8 +278,12 @@ def sentence_similarity(sentence1, sentence2):
 #     print
 
 
-def generate(data):
-    data1 = summary_LSA.summarize(data)
+def generate(data, l, k):
+    if l == None:
+        l = 100
+    if k == None:
+        k = 10
+    data1 = summary_LSA.summarize(data, l=l, k=k)
     lsa = ""
     for i in data1[0][0]:
         lsa += i + ". "

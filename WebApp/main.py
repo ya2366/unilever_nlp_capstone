@@ -51,9 +51,10 @@ def text_summarization_textrank():
 def get_summarization():
     # max_length_of_summary = request.form["max_length_of_summary"]
     # number_of_concept = request.form["number_of_concept"]
-    # is_tfidf = request.form["is_tfidf"]
     # split_long_sentence = request.form["split_long_sentence"]
     #lsa_result = summary_LSA.summarize(data = text)
+    l = request.form["maxLength"]
+    k = request.form["kconcept"]
     filename = request.form['name']
     surveys = pd.read_excel(filename, header=0)
     col_name = request.form['question']
@@ -76,7 +77,7 @@ def get_summarization():
         generation = ""
         origin = ""
     else:
-        generation, origin = regenerate.generate(text)
+        generation, origin = regenerate.generate(text, l=int(l), k=int(k))
     print (generation)
     print (origin)
     context = dict()
