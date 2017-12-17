@@ -23,7 +23,7 @@ Description: A two-column, fixed-width template.
 <div id="page">
   <div id="sidebar" style = "height:100vh">
     <div id="logo">
-      <center><image src = "static/images/unilever.png" height="140px" margin="20px"></image></center>
+      <center><a href="/"><image src = "static/images/unilever.png" height="140px" margin="20px"></image></a></center>
     </div>
     <!-- end header -->
     <div id="menu">
@@ -80,7 +80,12 @@ Description: A two-column, fixed-width template.
       <div>
         <h3 style="width:140px;background-color:lightcoral">Adjusted Score: </h3>
         <div style="width:140px;background-color:lightcoral">{{adjusted_score}}</div>  
+        <p> About Adjust Score: It calculated by the metric: senti_text_score + 2 * senti_title_score + vader_text_score + vader_title score. Because the senti_title_score contains main sentiment information in customer reviews and it is more accurate than vader_title_score, we set the weight for it as 2.</p> 
       </div>
+      <div>
+        <h3>Sentiment Score Explanation</h3>
+        <p> The normal range for the score is -3 to 3, but not limited to this range. The larger the absolute score value it is, the stronger the positve(+)/negative(-) sentiment information inclueded in customer's review. For -0.5 to 0.5, the review might contains both positve and negative information or neural sentiment information. </p> 
+      <div>
     </div>
     
   </div>
