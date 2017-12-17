@@ -43,11 +43,19 @@ Description: A two-column, fixed-width template.
     <div><img src="images/img08.jpg" alt="" width="740" height="220" /></div>
     <div class="boxed">
       <h1 class="title2"><center>Welcome to Unilever NLP Page !</center></h1>
-      <h1 class="title2"><center>Text Summarization Using TextRank</center></h1>
+      <h1 class="title2"><center>Text Summarization For TextRank</center></h1>
       <h2>Input your text</h2>
       <form method="POST" action="/get_summarization_textrank">
-          <p>Input the text file that you want to extract: </p>
-          <textarea type="text" name="text"></textarea>
+          <p>Input the file name that you want to extract: (eg: Beauty_review.xlsx)</p>
+          <input type="text" name="name">
+          <p>Input the question you want to extract/Column Name: (eg: reviewText)</p>
+          <input type="text" name="question">
+          <p>Input which column you want to filter your row by: (eg: productID) </p>
+          <input type="text" name="filter_by">
+          <p>Input the product ID you want to extract reviews for/Row Name: (eg: B000AO2NXS)</p>
+          <input type="text" name="product_id">
+          <p> Or input the summarization you want to improved: </p>
+          <textarea type="text" name="text"> </textarea>
           <p><input type="submit" value="Submit"></p>
       </form>
     </div>

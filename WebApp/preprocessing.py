@@ -23,7 +23,7 @@ path_to_jar = cwd + 'StanfordCoreNLP/stanford-corenlp-3.2.0.jar'
 path_to_models_jar = cwd + 'StanfordCoreNLP/stanford-corenlp-3.2.0-models.jar'
 
 stan_parser = StanfordParser(path_to_jar=path_to_jar, path_to_models_jar=path_to_models_jar)
-
+#ENCHANT_DICT = enchant.Dict("en_US")
 
 def make_sentences_from_dataframe(df, columns):
 	"""
@@ -200,9 +200,9 @@ def vectorize(sentences, ngram_range=(1,1), tfidf=False):
 	vectorizer.fit(sentences)
 
 	transformed = vectorizer.transform(sentences)
-	# print(DELIMITER + 'After vectorization (ngram_range: {}):'.format(ngram_range))
-	# print(transformed.shape)
-	# print(transformed[:2])
+	print(DELIMITER + 'After vectorization (ngram_range: {}):'.format(ngram_range))
+	print(transformed.shape)
+	print(transformed[:2])
 
 	return transformed
 
@@ -231,3 +231,18 @@ def extract_noun_phrases(sentences):
 						noun_phrases.append(' '.join(nps))
 
 	return noun_phrases
+
+def do_exclude_misspelled(sentences):
+	sentences_spellchecked = []
+	for sentence in sentences:
+		# for w in word_tokenize(sentence):
+			# if ENCHANT_DICT.check(w) == False:
+            #
+			# 	sentence.replace(w, '')
+
+		# Make sure we didn't remove all words from the vector
+		pattern = re.compile(r'\S')
+		if pattern.match(sentence):
+			sentences_spellchecked.append(sentence)
+
+	return sentences_spellchecked
