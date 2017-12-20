@@ -23,7 +23,7 @@ Description: A two-column, fixed-width template.
 <div id="page">
   <div id="sidebar" style = "height:100vh">
     <div id="logo">
-      <center><image src = "static/images/unilever.png" height="140px" margin="20px"></image></center>
+      <center><a href="/"><image src = "static/images/unilever.png" height="140px" margin="20px"></image></a></center>
     </div>
     <!-- end header -->
     <div id="menu">
@@ -47,5 +47,7 @@ Description: A two-column, fixed-width template.
     <div class="boxed" style="background-color:gold">
       <h2>Product Sentiment Score:</h2>
       <div>{{product_score}}</div>
+      <h2>Sentiment Score Explanation</h2>
+      <p> The normal range for Multilingual Sentiment Analysis score is -3 to 3, but not limited to this range. The larger the absolute score value it is, the stronger the positive(+)/negative(-) sentiment information it includes in customer's review. For -0.5 to 0.5, the review might contains both positive and negative information or neural sentiment information. </p> 
     </div>
     

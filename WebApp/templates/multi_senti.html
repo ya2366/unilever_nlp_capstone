@@ -25,7 +25,7 @@ Description: A two-column, fixed-width template.
 <div id="page">
   <div id="sidebar" style = "height:100vh">
     <div id="logo">
-      <center><image src = "static/images/unilever.png" height="140px" margin="20px"></image></center>
+      <center><a href="/"><image src = "static/images/unilever.png" height="140px" margin="20px"></image></a></center>
     </div>
     <!-- end header -->
     <div id="menu">
@@ -46,32 +46,53 @@ Description: A two-column, fixed-width template.
     <div class="boxed">
       <h1 class="title2"><center>Welcome to Unilever NLP Page !</center></h1>
       <h1 class="title2"><center>Multiligual Sentiment Analysis</center></h1>
-      <h2>Input your review xlsx</h2>
-      <form method="POST" action="/product_senti">
-          <p>Input your product review xlsx: </p>
-          <input type="text" name="name" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
-          <p>After you finished, click below button to gain the sentiment score</p>
-          <input type="submit" value="Get Product Score" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;">
-      </form>
+      <div class="boxed" style="background-color:gold">
+        <h2>Product Review xlsx Sentiment Analysis</h2>
+        <form method="POST" action="/product_senti">
+            <p>Input your product review xlsx: (! Notice: this file must contains column "text" and "title")</p>
+            <input type="text" name="name">
+            <p>After you finished, click below button to gain the sentiment score</p>
+            <input type="submit" value="Get Product Score" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;">
+        </form>
+      </div>
 
-      <h2>Input your review text</h2>
-      <form method="POST" action="/get_senti_infor">
-          <p>Input the text file that you want to do multilingual sentiment analysis: </p>
-          <input type="text" name="text" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
-          <p>Input the title if it has </p>
-          <input type="text" name="title" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
-          <p>After you finished, click below button to gain the sentiment score</p>
-          <input type="submit" value="Get Single Review Score" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;">
-      </form>
-      <h2>Input your survey comparison text</h2>
-      <form method="POST" action="/survey_senti">
-          <p>Input the before wash survey data: </p>
-          <input type="text" name="before_sur" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
-          <p>Input the after wash survey data: </p>
-          <input type="text" name="after_sur" style="width:96%;height:40px;background-color:gold;color:olive;border:none;padding:2%;font:15px/20px sans-serif;">
-          <p>After you finished, click below button to gain the sentiment score</p>
-          <input type="submit" value="Get Single Survey Score" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;">
-      </form>
+      <div class="boxed" style="background-color:lightblue">
+        <h2>Column-Based Sentiment Analysis</h2>
+        <form method="POST" action="/column_senti">
+            <p>Input your xlsx file name: </p>
+            <input type="text" name="name_col">
+            <p>Input your selected column name: (! Notice: only could select one column)</p>
+            <input type="text" name="col">
+            <p>Input your analyis type: (Please fill 'review' or 'survey')</p>
+            <input type="text" name="type">
+            <p>After you finished, click below button to gain the sentiment score</p>
+            <input type="submit" value="Get Column Score" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;">
+        </form>
+      </div>
+
+      <div class="boxed" style="background-color:gold">
+        <h2>Single Review Sentiment Analysis</h2>
+        <form method="POST" action="/get_senti_infor">
+            <p>Input the text file that you want to do multilingual sentiment analysis: </p>
+            <input type="text" name="text" style="width:96%;height:40px;border:none;padding:2%;font:15px/20px sans-serif;">
+            <p>Input the title if it has </p>
+            <input type="text" name="title" style="width:96%;height:40px;border:none;padding:2%;font:15px/20px sans-serif;">
+            <p>After you finished, click below button to gain the sentiment score</p>
+            <input type="submit" value="Get Single Review Score" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;">
+        </form>
+      </div>
+
+      <div class="boxed" style="background-color:lightblue">
+        <h2>Single Survey Sentiment Analysis</h2>
+        <form method="POST" action="/survey_senti">
+            <p>Input the before wash survey data: </p>
+            <input type="text" name="before_sur" style="width:96%;height:40px;border:none;padding:2%;font:15px/20px sans-serif;">
+            <p>Input the after wash survey data: </p>
+            <input type="text" name="after_sur" style="width:96%;height:40px;border:none;padding:2%;font:15px/20px sans-serif;">
+            <p>After you finished, click below button to gain the sentiment score</p>
+            <input type="submit" value="Get Single Survey Score" style="background-color:yellowgreen;color:white;padding:5px;font-size:12px;border:none;padding:6px;">
+        </form>
+      </div>
     </div>
     
   </div>
