@@ -264,6 +264,7 @@ def get_file():
 @app.route("/sentiment_analysis_multilingual")
 def multilingual_analysis():
     return render_template("multi_senti.html")
+
 #yunsi
 @app.route("/get_senti_infor",methods=['POST'])
 def get_senti_infor():
@@ -346,6 +347,40 @@ def product_senti():
     #print("Context: ",context)
     return render_template("multi_product.html", **context)
 
+#yunsi
+@app.route("/column_senti",methods=['POST'])
+def column_senti():
+    filenames = request.form['name_col']
+    ana_type = request.form['type']
+    df = pd.read_excel(filenames)
+    input_col = request.form['col']
+    df_col = df[input_col]
+    text_t = multi_prod_func.translation_to_eng(df_col)
+    text_token = multi_prod_func.tokenization(text_t)
+    text_tag = multi_prod_func.pos_mark(text_token)
+    text_tag = multi_prod_func.pos_mark(text_token)
+    text_sentiment = multi_prod_func.senti_score(text_tag)
+    df['text_Sentiment_Score'] = text_sentiment
+    vader_text_score = multi_prod_func.vader_senti_score(text_t)
+    df['Vader_text_score'] = vader_text_score
+    df['Adj_score'] = df['text_Sentiment_Score'] + df['Vader_text_score']
+    sent_score = df['text_Sentiment_Score'].mean()
+    vader_score = df['Vader_text_score'].mean()
+    if ana_type == 'review':
+        col_score = df['Adj_score'].mean()
+        context = dict() #input back
+        context['sent_score'] = sent_score 
+        context['vader_score'] = vader_score 
+        context['col_score'] = col_score #result
+    elif ana_type == 'survey':
+        col_score = df['text_Sentiment_Score'].mean()
+        context = dict() #input back
+        context['sent_score'] = sent_score 
+        context['vader_score'] = vader_score 
+        context['col_score'] = col_score #result
+    #print("Context: ",context)
+    return render_template("multi_col_score.html", **context)
+
 @app.route('/get_keyphrases',methods=['POST'])
 def get_keyphrases():
     stoppath = "SmartStoplist.txt"
@@ -361,7 +396,7 @@ def get_keyphrases():
         col=df[col_name]
     else:
         col=surveys[col_name]
-    for i in range(len(col)):
+    for i in col.index:
         text=text+" "+col[i]
     print(text)
     min_char_length=request.form['min_char_length']

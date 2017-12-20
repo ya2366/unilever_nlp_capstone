@@ -14,8 +14,6 @@ Description: A two-column, fixed-width template.
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>Unilever Text Analysis</title>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link href= "{{ url_for('static', filename='default.css') }}" rel="stylesheet" type="text/css" />
@@ -44,32 +42,16 @@ Description: A two-column, fixed-width template.
   <div id="content">
     <div><img src="images/img08.jpg" alt="" width="740" height="220" /></div>
     <div class="boxed">
-      <h1 class="title2"><center>Crawler Results</center></h1>
+      <h1 class="title2"><center>Multilingual Sentiment Analysis Results</center></h1>
     </div>
-      <div  class="w3-container">
-        <h4> Product Name: {{product_name}} </h4>
-
-        <h4> Response:  {{message}}</h4>
-      <table class="w3-table-all w3-card-4">
-        <tr>
-      <th>Title</th>
-      <th>Text</th>
-      <th>Rating</th>
-    </tr>
-    {% for review in reviews %}
-    <tr>
-      <td>{{review['title']}}</td>
-      <td>{{review['text']}}</td>
-      <td>{{review['stars']}}</td>
-    </tr>
-     {% endfor %}
-      </table>
-       </div>
-
+    <div class="boxed" style="background-color:gold">  
+      <h2>Sentiment Score (by SentiWordNet)</h2>
+      <div>{{sent_score}}</div> 
+      <h2>Vader Score (by Vader)</h2>
+      <div>{{vader_score }}</div> 
+      <h2>Adjust Score (the sum of above two scores)</h2>
+      <div>{{col_score}}</div> 
+      <h2>Sentiment Score Explanation</h2>
+      <p> The normal range for Multilingual Sentiment Analysis score is -3 to 3, but not limited to this range. The larger the absolute score value it is, the stronger the positive(+)/negative(-) sentiment information it includes in customer's review. For -0.5 to 0.5, the review might contains both positive and negative information or neural sentiment information. </p> 
     </div>
-
     
-
-<!-- end page -->
-</body>
-</html>

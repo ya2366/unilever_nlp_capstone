@@ -25,7 +25,7 @@ Description: A two-column, fixed-width template.
 <div id="page">
   <div id="sidebar">
     <div id="logo">
-      <center><image src = "static/images/unilever.png" height="140px" margin="20px"></image></center>
+      <center><a href="/"><image src = "static/images/unilever.png" height="140px" margin="20px"></image></a></center>
     </div>
     <!-- end header -->
     <div id="menu">
@@ -47,6 +47,7 @@ Description: A two-column, fixed-width template.
       <h1 class="title2"><center>Welcome to Unilever NLP Page !</center></h1>
       <h1 class="title2"><center>Keyphrase Extraction Using Rake</center></h1>
       <p><a href="/keyphrase_extraction/textrank">Try Keyphrase Extraction Using TextRank</a></p>
+      <p><a href="/">Go back to main page to upload Excel File</a></p>
       <h2>Input your parameters</h2>
       <form method="POST" action="/get_keyphrases">
           <p>Input the file name that you want to extract: (eg: Bar_soup.xlsx)</p>
@@ -57,17 +58,17 @@ Description: A two-column, fixed-width template.
           <input type="text" name="filter_by">
           <p>Input the product ID you want to extract reviews for/Row Name(Optional):</p>
           <input type="text" name="product_id">
-          <p>Minimum character length in a word: (eg:2)</p>
+          <p>Minimum character length in a word: (2-20)</p>
           <input type="text" name="min_char_length">
-          <p>Minimum word length in a phrase: (eg:2)</p>
+          <p>Minimum word length in a phrase: (0-5)</p>
           <input type="text" name="min_words_length">
-          <p>Maximum word length in a phrase: (eg:7)</p>
+          <p>Maximum word length in a phrase: (0-10)</p>
           <input type="text" name="max_words_length">
-          <p>Minimum phrase frequency in the text: (eg:1)</p>
+          <p>Minimum phrase frequency in the text: (0-10)</p>
           <input type="text" name="min_keyword_frequency">
           <p>Frequency Trade Off: choose from 0 to 1</p>
           <input type="text" name="trade_off">
-          <p>Number of keyphrases to see: (eg:10)</p>
+          <p>Number of keyphrases to see: </p>
           <input type="text" name="top_n">
           <input type="submit" value="Submit">
       </form>
