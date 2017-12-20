@@ -68,7 +68,7 @@ def get_summarization():
     else:
         col = surveys[col_name]
     text = ""
-    for i in range(len(col)):
+    for i in col.index:
         text = text + " " + col[i]
     print(text)
     if text == "":
@@ -100,7 +100,7 @@ def get_summarization_textrank():
     else:
         col = surveys[col_name]
     text = ""
-    for i in range(len(col)):
+    for i in col.index:
         text = text + " " + col[i]
     print(text)
     if text == "":
