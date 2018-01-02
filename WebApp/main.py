@@ -68,7 +68,7 @@ def get_summarization():
     else:
         col = surveys[col_name]
     text = ""
-    for i in range(len(col)):
+    for i in col.index:
         text = text + " " + col[i]
     print(text)
     if text == "":
@@ -100,7 +100,7 @@ def get_summarization_textrank():
     else:
         col = surveys[col_name]
     text = ""
-    for i in range(len(col)):
+    for i in col.index:
         text = text + " " + col[i]
     print(text)
     if text == "":
@@ -400,7 +400,7 @@ def get_keyphrases():
         col=df[col_name]
     else:
         col=surveys[col_name]
-    for i in range(len(col)):
+    for i in col.index:
         text=text+" "+col[i]
     print(text)
     min_char_length=request.form['min_char_length']
