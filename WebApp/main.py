@@ -354,6 +354,10 @@ def column_senti():
     ana_type = request.form['type']
     df = pd.read_excel(filenames)
     input_col = request.form['col']
+    id_col = request.form['id_col']
+    id_name = request.form['id_name']
+    if id_col != '': #select id
+        df = df.loc[df[id_col] == id_name]
     df_col = df[input_col]
     text_t = multi_prod_func.translation_to_eng(df_col)
     text_token = multi_prod_func.tokenization(text_t)
